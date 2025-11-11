@@ -1,0 +1,14 @@
+/* 1. Impor semua gaya dasar Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 2. Impor file CSS kustom/lama Anda di bawahnya */
+@import './welcome.css';
+@import './admin/D_admin.css';
+@import './owner/D_owner.css';
+@import './user/D_user.css';
+@import './admin/A_histogram.css';
+@import './user/layouts.user.css';
+@import './user/Booking-list.css';
+@import './user/review-user.css';

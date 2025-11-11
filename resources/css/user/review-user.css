@@ -1,0 +1,154 @@
+:root {
+    --primary-yellow: #fbbf24;
+    --primary-black: #111827;
+    --secondary-black: #1f2937;
+    --accent-black: #374151;
+    --pure-white: #FFFFFF;
+    --text-muted: #9ca3af;
+}
+
+/* Reset dasar */
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--primary-black);
+    color: var(--pure-white);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Grid utama */
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin: 2rem 1rem;
+}
+
+/* Card review lebih besar */
+.review-card {
+    background: var(--secondary-black);
+    width: 100%;
+    max-width: 500px;
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--accent-black);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-sizing: border-box;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+}
+
+/* Info kendaraan */
+.vehicle-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.vehicle-image {
+    width: 140px;
+    height: 100px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.vehicle-details h3 {
+    font-size: 1.3rem;
+    color: var(--pure-white);
+    margin-bottom: 0.3rem;
+}
+
+.vehicle-details p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* Konten review */
+.review-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.rating, .review-message, .review-text {
+    font-size: 1rem;
+}
+
+.review-message.excellent { color: #4ade80; font-weight: 500; }
+.review-message.good { color: #facc15; font-weight: 500; }
+.review-message.no-rating { color: var(--text-muted); font-weight: 500; }
+
+/* Tombol aksi */
+.review-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.action-btn {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: var(--primary-yellow);
+    color: var(--primary-black);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.action-btn:hover {
+    background: #f59e0b;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--text-muted);
+}
+
+.empty-state h3 {
+    font-size: 1.8rem;
+    color: var(--pure-white);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .reviews-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .review-card {
+        max-width: 100%;
+        padding: 1rem;
+    }
+
+    .vehicle-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .vehicle-image {
+        width: 100%;
+        height: auto;
+    }
+}
