@@ -1,17 +1,10 @@
-@extends('layouts.owner')
+@extends('layouts.owner.owner')
 
 @section('title', 'Daftar Booking Masuk')
 
 @section('content')
 
-<div class="content-header">
-     <div class="header-left">
-        <button class="mobile-menu-toggle" id="menuToggle">
-            <span></span><span></span><span></span>
-        </button>
-        <h1 class="system-title">Riwayat Pemesanan</h1>
-    </div>
-</div>
+@include('layouts.owner.partials.header', ['headerTitle' => 'Riwayat Pemesanan'])
 
 <div class="dashboard-content">
     @if(session('success'))
@@ -43,30 +36,30 @@
                         <td>{{ $booking->status }}</td>
                         <td>
                             @if($booking->rating)
-                                 <span style="color: #FFD700;"><i class="fas fa-star"></i></span>
-                                 <strong>{{ $booking->rating }}</strong> / 5
+                                <span style="color: #FFD700;"><i class="fas fa-star"></i></span>
+                                <strong>{{ $booking->rating }}</strong> / 5
                             @else
                                 <span>-</span>
                             @endif
                         </td>
                         <td>
                             @if($booking->review)
-                                 <span style="color: #333;"><i class="fas fa-comment"></i></span>
-                                 <strong>{{ $booking->review }}</strong>
+                                <span style="color: #333;"><i class="fas fa-comment"></i></span>
+                                <strong>{{ $booking->review }}</strong>
                             @else
                                 <span>-</span>
                             @endif
                         </td>
                         <td>
                             <a href="{{ route('booking.print', $booking->id) }}" class="table-action-btn" target="_blank" title="Cetak Invoice">
-                               <i class="fas fa-print"></i>
+                                <i class="fas fa-print"></i>
                             </a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="empty-table">
-                           <div class="empty-state">Belum ada data booking.</div>
+                        <td colspan="7" class="empty-table">
+                            <div class="empty-state">Belum ada data booking.</div>
                         </td>
                     </tr>
                 @endforelse

@@ -12,3 +12,5 @@
 @import './user/layouts.user.css';
 @import './user/Booking-list.css';
 @import './user/review-user.css';
+@import './owner/Detail_booking.css';
+@import './owner/profile-owner.css';

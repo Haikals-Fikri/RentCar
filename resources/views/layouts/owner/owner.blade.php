@@ -27,7 +27,6 @@
                         <div class="owner-role">Pemilik Kendaraan</div>
                     </div>
                 </div>
-                <div class="menu-title">MENU</div>
             </div>
             <nav>
                 <ul class="nav-menu">
@@ -51,22 +50,18 @@
                     </li>
                     {{-- Ganti link # dengan route yang benar jika sudah ada --}}
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <span class="nav-icon">💰</span>
-                            <span>Transaksi</span>
-                        </a>
+                    <a href="{{ route('booking.analytics') }}"
+                    class="nav-link {{ request()->routeIs('booking.analytics') ? 'active' : '' }}">
+                    <span class="nav-icon">📑</span>
+                     <span>Detail Booking</span>
+                    </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="{{ route('profile.owner') }}" class="nav-link {{ request()->routeIs('profile.owner') ? 'active' : '' }}">
                             <span class="nav-icon">👤</span>
                             <span>Profil</span>
                         </a>
-                    </li>
-                    {{-- <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <span class="nav-icon">⚙️</span>
-                            <span>Pengaturan</span>
-                        </a> --}}
                     </li>
                 </ul>
             </nav>

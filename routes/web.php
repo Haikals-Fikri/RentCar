@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DetailBooking;
 use App\Models\Booking;
 use App\Models\OwnerProfile;
 
@@ -84,6 +85,8 @@ Route::get('/admin/histogram', [AdminController::class, 'histogram'])->name('adm
 // Form booking & simpan
 Route::get('/booking/{vehicle}', [BookingController::class, 'create'])->name('booking.form');
 Route::post('/booking/{vehicle}/store', [BookingController::class, 'store'])->name('booking.store');
+// Detail booking
+Route::get('/booking-analytics', [DetailBooking::class, 'index'])->name('booking.analytics');
 
 // Daftar booking user
 Route::get('/user/bookings', [BookingController::class, 'index'])->name('user.bookings');
@@ -106,5 +109,6 @@ Route::get('/user/reviews', [BookingController::class, 'userReviews'])->name('us
 // Cetak PDF
 Route::get('/booking/{id}/print', [BookingController::class, 'printPdf'])->name('booking.print');
 
-
+// Route untuk print laporan
+Route::get('/booking-analytics/print', [DetailBooking::class, 'printReport'])->name('booking.print-report');
 

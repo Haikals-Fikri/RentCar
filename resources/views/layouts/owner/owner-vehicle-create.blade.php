@@ -1,77 +1,15 @@
-@extends('layouts.owner')
+@extends('layouts.owner.owner')
 
 @section('title', 'Tambah Kendaraan Baru')
 
-@push('styles')
-<style>
-    .page-title {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 2rem;
-        color: var(--pure-white);
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-    .page-title-icon {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, var(--primary-yellow), var(--secondary-yellow));
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        color: var(--primary-black);
-    }
-    .form-container {
-        background: var(--secondary-black);
-        border-radius: 16px;
-        border: 1px solid var(--accent-black);
-        padding: 2.5rem;
-    }
-    .error-container {
-        background: rgba(255, 107, 107, 0.1);
-        border: 1px solid rgba(255, 107, 107, 0.3);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    .error-title { color: #FF6B6B; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-    .error-item { color: #FF6B6B; padding: 0.3rem 0; }
-    .form-group { margin-bottom: 1.5rem; }
-    .form-label { display: block; color: var(--pure-white); font-weight: 500; margin-bottom: 0.8rem; }
-    .form-input {
-        width: 100%; padding: 1rem 1.2rem; background: var(--primary-black);
-        border: 1px solid var(--accent-black); border-radius: 8px;
-        color: var(--pure-white); font-size: 1rem; transition: all 0.3s ease;
-    }
-    .form-input:focus { outline: none; border-color: var(--primary-yellow); box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2); }
-    .form-input.error { border-color: #FF6B6B; }
-    .form-hint { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem; }
-    .file-input-label {
-        display: flex; align-items: center; gap: 0.5rem;
-        padding: 1rem 1.5rem; background: rgba(255, 215, 0, 0.1);
-        border: 2px dashed var(--accent-black); border-radius: 8px;
-        color: var(--primary-yellow); font-weight: 600; cursor: pointer; transition: all 0.3s ease;
-    }
-    .file-input-label:hover { background: rgba(255, 215, 0, 0.15); border-color: var(--primary-yellow); }
-    .file-input { display: none; }
-    .file-preview { display: none; margin-top: 1rem; }
-    .file-preview img { max-height: 200px; border-radius: 8px; }
-    .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--accent-black); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
-</style>
-@endpush
+@vite('resources/css/owner/D_owner.css')
 
 @section('content')
-<div class="page-title">
-    <span class="page-title-icon">🚗</span>
-    <span>Tambah Kendaraan Baru</span>
-</div>
+
+@include('layouts.owner.partials.header', ['headerTitle' => 'Tambah Kendaraan Baru'])
 
 <div class="form-container">
+
     @if ($errors->any())
         <div class="error-container">
             <div class="error-title">
@@ -88,6 +26,7 @@
 
     <form action="{{ route('vehicles.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
+
         <div class="form-row">
             <div class="form-group">
                 <label for="name" class="form-label">Nama Kendaraan</label>
@@ -160,6 +99,7 @@
         </div>
     </form>
 </div>
+
 @endsection
 
 @push('scripts')

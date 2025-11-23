@@ -1,17 +1,10 @@
-@extends('layouts.owner')
+@extends('layouts.owner.owner')
 
 @section('title', 'Dashboard Owner')
 
 @section('content')
 
-<div class="content-header">
-    <div class="header-left">
-        <button class="mobile-menu-toggle" id="menuToggle">
-            <span></span><span></span><span></span>
-        </button>
-        <h1 class="system-title">Dashboard Kendaraan</h1>
-    </div>
-</div>
+@include('layouts.owner.partials.header', ['header-title' => 'Dashboard Kendaraan kamu'])
 
 <div class="dashboard-content">
     <div class="section-header">
@@ -24,8 +17,6 @@
             <div class="alert-message">{{ session('success') }}</div>
         </div>
     @endif
-
-
 
     <div class="data-table-container">
         <table class="data-table">
