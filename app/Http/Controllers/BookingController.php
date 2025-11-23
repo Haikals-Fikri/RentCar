@@ -129,13 +129,21 @@ class BookingController extends Controller
         // Mengambil SEMUA booking milik user yang login,
         // bukan hanya yang sudah ada review.
         $reviews = Booking::with('vehicle')
-            ->where('user_id', Auth::id()) // <-- Ini filternya
-            ->latest()
-            ->get();
+        ->where('user_id', Auth::id())
+        ->where(function($query) {
+            $query->where('status', 'Completed') // Yang sudah selesai
+                  ->orWhere(function($q) {
+                      // Atau yang sudah lewat tanggal tapi belum complete
+                      $q->where('status', 'Disetujui')
+                        ->where('end_date', '<', Carbon::now());
+                  });
+        })
+        ->latest()
+        ->get();
 
-        // Pastikan nama view ini ('booking.reviews') benar
-        return view('booking.reviews', compact('reviews'));
-    }
+    return view('booking.reviews', compact('reviews'));
+}
+
 
     // Proses complete booking
     // ========================================================

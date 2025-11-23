@@ -54,15 +54,15 @@
                 <div class="review-actions">
                     @if($vehicle)
 
-                        {{-- =============================================== --}}
-                        {{-- KODE SUDAH DIPERBARUI --}}
-                        {{-- =============================================== --}}
-                        <a href="{{ route('booking.completeForm', $booking->id) }}" class="action-btn">
-                            {{ $booking->rating ? 'Edit Ulasan' : 'Beri Ulasan' }}
-                        </a>
-                        {{-- =============================================== --}}
-                        {{-- AKHIR PERUBAHAN --}}
-                        {{-- =============================================== --}}
+                        @if (!$booking->rating)
+                            <a href="{{ route('booking.completeForm', $booking->id) }}" class="action-btn">
+                                Beri Ulasan
+                            </a>
+                        @else
+                            <a href="{{ route('booking.completeForm', $booking->id) }}" class="action-btn">
+                                Edit Ulasan
+                            </a>
+                        @endif
 
                         @if($isAvailable)
                             <a href="{{ route('booking.form', $vehicle->id) }}" class="action-btn">
