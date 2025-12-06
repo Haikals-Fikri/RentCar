@@ -2,7 +2,7 @@ import './bootstrap';
 
 
 // Landing Page
-import '.welcome.js'; //JS welcome page
+import './welcome.js'; //JS welcome page
 
 
 // Admin

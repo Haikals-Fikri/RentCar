@@ -18,15 +18,21 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="alert-container error">
+            <div class="alert-icon">✗</div>
+            <div class="alert-message">{{ session('error') }}</div>
+        </div>
+    @endif
+
     <div class="data-table-container">
         <table class="data-table">
             <thead>
                 <tr>
                     <th>Nama</th>
                     <th>Merk</th>
-                    <th>No Polisi</th>
-                    <th>Harga/Hari</th>
-                    <th>Gambar</th>
+                    <th>Plat Nomor</th> <th>Harga/Hari</th>
+                    <th>Status</th> <th>Gambar</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -37,6 +43,13 @@
                         <td>{{ $vehicle->brand }}</td>
                         <td>{{ $vehicle->plate_number }}</td>
                         <td>Rp {{ number_format($vehicle->price_per_day, 0, ',', '.') }}</td>
+
+                        <td>
+                            <span class="status-badge status-{{ strtolower($vehicle->status_vehicle) }}">
+                                {{ str_replace('_', ' ', $vehicle->status_vehicle) }}
+                            </span>
+                        </td>
+
                         <td class="image-cell">
                             @if($vehicle->image)
                                 <img src="{{ asset('storage/'.$vehicle->image) }}" class="vehicle-image" alt="{{ $vehicle->name }}">
@@ -46,6 +59,25 @@
                         </td>
                         <td>
                             <div class="table-actions">
+
+                                @if ($vehicle->status_vehicle !== 'Tersedia')
+                                    <form action="{{ route('vehicles.updateStatus', $vehicle->id) }}" method="POST" style="display:inline;" title="Set Tersedia">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status_vehicle" value="Tersedia">
+                                        <button type="submit" class="table-action-btn status-available-btn">✅</button>
+                                    </form>
+                                @endif
+
+                                @if ($vehicle->status_vehicle !== 'Maintanance')
+                                    <form action="{{ route('vehicles.updateStatus', $vehicle->id) }}" method="POST" style="display:inline;" title="Set Maintanance">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status_vehicle" value="Maintanance">
+                                        <button type="submit" class="table-action-btn status-maintenance-btn">🔧</button>
+                                    </form>
+                                @endif
+
                                 <a href="{{ route('vehicles.edit', $vehicle->id) }}" class="table-action-btn edit-btn" title="Edit">✏️</a>
                                 <form action="{{ route('vehicles.destroy', $vehicle->id) }}" method="POST" style="display:inline">
                                     @csrf
@@ -57,8 +89,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="empty-table">
-                            <div class="empty-state">
+                        <td colspan="7" class="empty-table"> <div class="empty-state">
                                 <div class="empty-icon">🚗</div>
                                 <div class="empty-text">Belum ada kendaraan.</div>
                             </div>

@@ -3,26 +3,7 @@
 @section('title', 'Riwayat Sewa')
 
 @push('styles')
-    @vite('resources/css/user/booking-list.css')
-    <style>
-        .countdown-timer {
-            background: #ffeb3b;
-            color: #333;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-        .expired-text {
-            color: #6c757d;
-            font-style: italic;
-        }
-        .status-expired {
-            background: #6c757d;
-            color: white;
-        }
-    </style>
+    @vite('resources/css/user/Booking-list.css')
 @endpush
 
 @section('content')

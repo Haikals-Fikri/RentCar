@@ -30,12 +30,12 @@
                 <div class="form-group">
                     <label for="name" class="form-label">Nama Kendaraan</label>
                     <input type="text" id="name" name="name" class="form-input @error('name') error @enderror"
-                           value="{{ old('name', $vehicle->name) }}" required>
+                               value="{{ old('name', $vehicle->name) }}" required>
                 </div>
                 <div class="form-group">
                     <label for="brand" class="form-label">Merek</label>
                     <input type="text" id="brand" name="brand" class="form-input @error('brand') error @enderror"
-                           value="{{ old('brand', $vehicle->brand) }}" required>
+                               value="{{ old('brand', $vehicle->brand) }}" required>
                 </div>
             </div>
 
@@ -43,12 +43,12 @@
                 <div class="form-group">
                     <label for="type" class="form-label">Deskripsi / Tipe</label>
                     <input type="text" id="type" name="type" class="form-input @error('type') error @enderror"
-                           value="{{ old('type', $vehicle->type) }}" required>
+                               value="{{ old('type', $vehicle->type) }}" required>
                 </div>
                 <div class="form-group">
                     <label for="plate_number" class="form-label">No. Polisi</label>
                     <input type="text" id="plate_number" name="plate_number" class="form-input @error('plate_number') error @enderror"
-                           value="{{ old('plate_number', $vehicle->plate_number) }}" required>
+                               value="{{ old('plate_number', $vehicle->plate_number) }}" required>
                 </div>
             </div>
 
@@ -56,7 +56,7 @@
                 <div class="form-group">
                     <label for="seat" class="form-label">Jumlah Seat</label>
                     <input type="number" id="seat" name="seat" class="form-input @error('seat') error @enderror"
-                           value="{{ old('seat', $vehicle->seat) }}" required>
+                               value="{{ old('seat', $vehicle->seat) }}" required>
                 </div>
                 <div class="form-group">
                     <label for="transmission" class="form-label">Transmisi</label>
@@ -71,34 +71,36 @@
                 <div class="form-group">
                     <label for="fuel_type" class="form-label">Jenis Bahan Bakar</label>
                     <input type="text" id="fuel_type" name="fuel_type" class="form-input @error('fuel_type') error @enderror"
-                           value="{{ old('fuel_type', $vehicle->fuel_type) }}" required>
+                               value="{{ old('fuel_type', $vehicle->fuel_type) }}" required>
                 </div>
                 <div class="form-group">
                     <label for="year" class="form-label">Tahun Keluaran</label>
                     <input type="number" id="year" name="year" class="form-input @error('year') error @enderror"
-                           value="{{ old('year', $vehicle->year) }}" required>
+                               value="{{ old('year', $vehicle->year) }}" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="price_per_day" class="form-label">Harga per Hari (Rp)</label>
-                <input type="number" id="price_per_day" name="price_per_day" class="form-input @error('price_per_day') error @enderror"
-                       value="{{ old('price_per_day', $vehicle->price_per_day) }}" required>
-                <div class="form-hint">Masukkan angka saja tanpa titik atau koma.</div>
+            <label class="form-label">Foto Kendaraan</label>
+
+            <div id="image-preview-container" class="file-preview mb-3" style="{{ $vehicle->image ? '' : 'display: none;' }}">
+                <p class="form-hint preview-hint mb-1" id="current-image-text">
+                    @if($vehicle->image) Gambar saat ini: @endif
+                </p>
+                <img id="image-preview" src="{{ $vehicle->image ? asset('storage/' . $vehicle->image) : '' }}"
+                    alt="Preview Gambar">
             </div>
 
-            <div class="form-group">
-                <label class="form-label">Foto Kendaraan</label>
-                @if ($vehicle->image)
-                    <div class="file-preview mb-3">
-                        <p class="form-hint mb-1">Gambar saat ini:</p>
-                        <img src="{{ asset('storage/' . $vehicle->image) }}" alt="Vehicle Image" style="max-height: 150px; border-radius: 8px;">
-                    </div>
-                @endif
-                <label for="image" class="file-input-label">📁 Pilih Gambar Baru (Opsional)</label>
-                <input type="file" name="image" id="image" class="file-input">
-                <div class="form-hint">Kosongkan jika tidak ingin mengganti gambar.</div>
+            {{-- WRAPPER untuk label dan input file --}}
+            <div class="file-input-wrapper">
+                <label for="image" class="file-input-label">
+                    📁 Pilih Gambar Baru (Opsional)
+                </label>
+                <input type="file" id="image" name="image" class="file-input" accept="image/*">
             </div>
+
+    <div class="form-hint">Kosongkan jika tidak ingin mengubah/mengganti gambar</div>
+</div>
 
             <div class="form-actions">
                 <a href="{{ route('owner.dashboard') }}" class="btn btn-secondary">Batal</a>
@@ -107,4 +109,55 @@
         </form>
     </div>
 </div>
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imageInput = document.getElementById('image');
+    const previewContainer = document.getElementById('image-preview-container');
+    const previewImage = document.getElementById('image-preview');
+    const currentImageText = document.getElementById('current-image-text');
+
+    if (imageInput && previewContainer && previewImage) {
+        console.log('JavaScript loaded, elements found');
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            console.log('File selected:', file);
+
+            if (file) {
+                // Tampilkan kontainer preview
+                previewContainer.style.display = 'block';
+
+                // Ubah teks
+                if (currentImageText) {
+                    currentImageText.textContent = 'Gambar yang dipilih:';
+                }
+
+                // Preview gambar baru
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    console.log('Preview loaded');
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                console.log('File input cleared');
+                // Jika input file dikosongkan
+                if (!previewImage.src || previewImage.src === '' || !previewImage.src.includes('storage/')) {
+                    previewContainer.style.display = 'none';
+                } else if (currentImageText) {
+                    currentImageText.textContent = 'Gambar saat ini:';
+                }
+            }
+        });
+    } else {
+        console.log('Elements not found:', {
+            imageInput: !!imageInput,
+            previewContainer: !!previewContainer,
+            previewImage: !!previewImage
+        });
+    }
+});
+</script>
+@endpush
 @endsection

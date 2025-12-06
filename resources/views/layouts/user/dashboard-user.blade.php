@@ -19,7 +19,7 @@
         </p>
     </div>
     <img src="{{ asset('images/fortuner.png') }}" alt="Car Illustration" class="welcome-image"
-         onerror="this.src='/placeholder.svg?height=200&width=300'">
+        onerror="this.src='/placeholder.svg?height=200&width=300'">
 </section>
 
 <section class="search-section">
@@ -30,8 +30,8 @@
 
     <form class="search-form" method="GET" action="{{ route('user.dashboard') }}">
         <input type="text" name="search" class="search-input"
-               placeholder="Cari mobil berdasarkan nama, merk, atau tipe..."
-               value="{{ request('search') }}">
+            placeholder="Cari mobil berdasarkan nama, merk, atau tipe..."
+            value="{{ request('search') }}">
         <button type="submit" class="search-btn">
             <span>🔍</span><span>Cari</span>
         </button>
@@ -72,11 +72,14 @@
                 }
 
                 $instagram = $ownerProfile?->instagram ?? null;
+
+                // Memperbaiki string status untuk tampilan
+                $displayStatus = str_replace('_', ' ', $vehicle->status_vehicle);
             @endphp
 
             <div class="car-card">
                 <div class="car-image-container">
-                    <span class="car-label">{{ $vehicle->status_vehicle }}</span>
+                    <span class="car-label car-label-{{ strtolower($vehicle->status_vehicle) }}">{{ $displayStatus }}</span>
                     @if($vehicle->image)
                         <img src="{{ asset('storage/' . $vehicle->image) }}" alt="{{ $vehicle->name }}" class="car-image">
                     @else
@@ -140,10 +143,15 @@
                                 <i class="fas fa-circle"></i>
                                 <span>Tersedia</span>
                             </div>
-                        @else
+                        @elseif ($vehicle->status_vehicle == 'Tidak_tersedia')
                             <div class="car-status unavailable">
                                 <i class="fas fa-circle"></i>
                                 <span>Tidak Tersedia</span>
+                            </div>
+                        @elseif ($vehicle->status_vehicle == 'Maintanance')
+                            <div class="car-status maintenance">
+                                <i class="fas fa-circle"></i>
+                                <span>Perawatan</span>
                             </div>
                         @endif
                     </div>
@@ -152,8 +160,10 @@
                         <a href="{{ route('booking.form', $vehicle->id) }}" class="rent-btn">
                             🚗 Pesan Sekarang
                         </a>
-                    @else
-                        <button class="rent-btn disabled" disabled>😞 Sudah Dipesan</button>
+                    @elseif ($vehicle->status_vehicle == 'Tidak_tersedia')
+                        <button class="rent-btn disabled" disabled>📅 Sudah Dipesan</button>
+                    @elseif ($vehicle->status_vehicle == 'Maintanance')
+                        <button class="rent-btn disabled" disabled>🔧 Dalam Perawatan</button>
                     @endif
 
                     <div class="owner-contact-info">

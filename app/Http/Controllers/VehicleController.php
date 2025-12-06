@@ -99,6 +99,19 @@ class VehicleController extends Controller
         return redirect()->route('owner.dashboard')->with('success', 'Data kendaraan berhasil diperbarui.');
     }
 
+    public function updateStatus(Request $request, Vehicle $vehicle)
+    {
+        $validatedData = $request->validate([
+            'status_vehicle' => 'required|in:Tersedia,Tidak_tersedia,Maintanance'
+        ]);
+
+        $vehicle->update([
+            'status_vehicle' => $validatedData['status_vehicle']
+        ]);
+
+        return redirect()->route('owner.dashboard')->with('success', 'Status kendaraan berhasil diperbarui.');
+    }
+
     /**
      * Hapus kendaraan.
      */
