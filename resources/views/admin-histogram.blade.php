@@ -1,6 +1,6 @@
 @extends('dashboard-admin')
-@vite('resources/js/admin/A_Histogram.js')
-@vite('resources/css/A_Histogram.css')
+
+@vite('resources/css/admin/A_Histogram.css')
 
 @section('content')
 
@@ -22,6 +22,7 @@
         </canvas>
     </div>
 </div>
+@vite('resources/js/admin/A_Histogram.js')
 @endif
 
 @endsection
