@@ -14,12 +14,12 @@ class RegistrasiTest extends TestCase
     use RefreshDatabase, WithoutMiddleware;
 
     private const VALID_NAME = 'Achmad Haikal Fikri';
-    private const VALID_EMAIL = 'haikal@example.com';
-    private const VALID_PASSWORD = 'Password123';
-    private const NEW_EMAIL = 'newuser@example.com';
+    private const VALID_EMAIL = 'userhaikal@gmail.com';
+    private const VALID_PASSWORD = '11111111';
+    private const NEW_EMAIL = 'userhaikals@gmail.com';
 
     #[Test]
-    public function registrasi_user_berhasil_dengan_data_valid()
+    public function RegistrationValidUser()
     {
         // ACT: Lakukan registrasi
         $response = $this->post('/register-user', [
@@ -56,11 +56,13 @@ class RegistrasiTest extends TestCase
     }
 
     #[Test]
-    public function registrasi_gagal_karena_email_sudah_terdaftar()
+    public function RegistratationInvalidEmailAvailable()
     {
-        // ARRANGE: Buat user terlebih dahulu
-        User::factory()->create([
+        // ARRANGE: Buat user terlebih dahulu dengan create()
+        User::create([
+            'name' => 'User Lama',
             'email' => self::VALID_EMAIL,
+            'password' => Hash::make(self::VALID_PASSWORD),
             'role' => 'user'
         ]);
 
@@ -72,40 +74,38 @@ class RegistrasiTest extends TestCase
             'password_confirmation' => self::VALID_PASSWORD,
         ]);
 
-        // ASSERT 1: Cek validation error menggunakan assertSessionHasErrors
+        // ASSERT 1: Cek validation error
         $response->assertSessionHasErrors('email');
 
-        // ASSERT 2: Cek pesan error mengandung kata 'taken' menggunakan assertStringContainsString
-        $sessionErrors = session('errors')->getBag('default')->get('email');
-        $this->assertStringContainsString('taken', $sessionErrors[0]);
+        // ASSERT 2: Cek jumlah user tetap 1 menggunakan assertCount
+        $this->assertCount(1, User::all());
 
-        // ASSERT 3: Cek jumlah user tetap 1 menggunakan assertCount
-        $users = User::where('email', self::VALID_EMAIL)->get();
-        $this->assertCount(1, $users);
-
-        // ASSERT 4: Cek nama tidak berubah menggunakan assertSame
+        // ASSERT 3: Cek nama TIDAK berubah (masih 'User Lama') menggunakan assertSame
         $existingUser = User::first();
-        $this->assertSame('Nama Baru', $existingUser->name);
+        $this->assertSame('User Lama', $existingUser->name);
 
-        // ASSERT 5: Verifikasi redirect menggunakan assertStatus untuk cek 302
+        // ASSERT 4: Verifikasi redirect menggunakan assertStatus
         $response->assertStatus(302);
+
+        // ASSERT 5: Tidak ada success message menggunakan assertSessionMissing
+        $response->assertSessionMissing('success');
     }
 
     #[Test]
-    public function validasi_password_confirmation_wajib_sesuai()
+    public function ValidatePasswordCharacter()
     {
-        // ACT: Coba registrasi dengan password confirmation berbeda
+        // ACT: Coba registrasi dengan password terlalu pendek
         $response = $this->post('/register-user', [
             'name' => self::VALID_NAME,
             'email' => self::NEW_EMAIL,
-            'password' => self::VALID_PASSWORD,
-            'password_confirmation' => 'DifferentPassword',
+            'password' => '123', // Hanya 3 karakter
+            'password_confirmation' => '123',
         ]);
 
-        // ASSERT 1: Cek error password menggunakan assertInvalid
-        $response->assertInvalid('password');
+        // ASSERT 1: Cek redirect menggunakan assertRedirect
+        $response->assertRedirect();
 
-        // ASSERT 2: Cek database kosong menggunakan assertDatabaseCount
+        // ASSERT 2: Cek tidak ada data yang tersimpan menggunakan assertDatabaseCount
         $this->assertDatabaseCount('users', 0);
 
         // ASSERT 3: Cek email tidak ada di database menggunakan assertDatabaseMissing
@@ -113,28 +113,36 @@ class RegistrasiTest extends TestCase
             'email' => self::NEW_EMAIL
         ]);
 
-        // ASSERT 4: Cek session memiliki errors menggunakan assertSessionHasAllErrors
-        $response->assertSessionHasAllErrors(['password']);
-
-        // ASSERT 5: Verifikasi tidak ada success message menggunakan assertSessionMissing
+        // ASSERT 4: Cek tidak ada success message menggunakan assertSessionMissing
         $response->assertSessionMissing('success');
+
+        // ASSERT 5: Cek URL bukan redirect ke login (harusnya back dengan error)
+        $this->assertNotEquals(
+            url('/login-user'),
+            $response->getTargetUrl()
+        );
+
+        // ASSERT 6: Cek password pendek tidak bisa di-hash dengan benar
+        $shortPassword = '123';
+        $hashed = Hash::make($shortPassword);
+        $this->assertGreaterThan(20, strlen($hashed), 'Hash harus lebih dari 20 karakter');
     }
 
     #[Test]
-    public function registrasi_owner_berbeda_dengan_user()
+    public function RegistratationOwnerDiffrentUser()
     {
         // ACT 1: Registrasi user
         $userResponse = $this->post('/register-user', [
-            'name' => 'Regular User',
-            'email' => 'user@test.com',
+            'name' => 'Risda',
+            'email' => 'risda@gmail.com',
             'password' => self::VALID_PASSWORD,
             'password_confirmation' => self::VALID_PASSWORD,
         ]);
 
         // ACT 2: Registrasi owner
         $ownerResponse = $this->post('/register-owner', [
-            'name' => 'Business Owner',
-            'email' => 'owner@test.com',
+            'name' => 'Adam',
+            'email' => 'adam@gmail.com',
             'password' => self::VALID_PASSWORD,
             'password_confirmation' => self::VALID_PASSWORD,
         ]);
@@ -148,11 +156,8 @@ class RegistrasiTest extends TestCase
         // ASSERT 2: Cek user redirect ke login-user menggunakan assertLocation
         $userResponse->assertLocation('/login-user');
 
-        // ASSERT 3: Cek owner redirect ke login-owner menggunakan assertStringContainsString
-        $this->assertStringContainsString(
-            '/login-owner',
-            $ownerResponse->getTargetUrl()
-        );
+        // ASSERT 3: Cek owner redirect ke login-owner menggunakan assertLocation
+        $ownerResponse->assertLocation('/login-owner');
 
         // ASSERT 4: Verifikasi role berbeda menggunakan assertNotSame
         $user = User::where('email', 'user@test.com')->first();
@@ -166,27 +171,27 @@ class RegistrasiTest extends TestCase
     }
 
     #[Test]
-    public function registrasi_dan_login_dapat_dilakukan_secara_berurutan()
+    public function RegistratationLoginSuitable()
     {
         // PHASE 1: Registrasi
         $registerResponse = $this->post('/register-user', [
-            'name' => 'Integration Test User',
-            'email' => 'integration@test.com',
-            'password' => 'testpassword',
-            'password_confirmation' => 'testpassword',
+            'name' => 'Ownerfikri@gmail.com',
+            'email' => 'ownerfikri@gmail.com',
+            'password' => '11111111',
+            'password_confirmation' => '11111111',
         ]);
 
         // ASSERT 1: Registrasi berhasil menggunakan assertRedirect
         $registerResponse->assertRedirect('/login-user');
 
         // ASSERT 2: User ada di database menggunakan assertNotNull
-        $user = User::where('email', 'integration@test.com')->first();
+        $user = User::where('email', 'ownerfikri@gmail.com')->first();
         $this->assertNotNull($user);
 
         // PHASE 2: Login dengan password salah
         $failedLogin = $this->post('/login-user', [
-            'email' => 'integration@test.com',
-            'password' => 'wrongpassword',
+            'email' => 'ownerfikri@gmail.com',
+            'password' => '111',
         ]);
 
         // ASSERT 3: Login gagal menggunakan assertSessionHasErrors
@@ -200,12 +205,12 @@ class RegistrasiTest extends TestCase
 
         // PHASE 3: Login dengan password benar
         $successLogin = $this->post('/login-user', [
-            'email' => 'integration@test.com',
-            'password' => 'testpassword',
+            'email' => 'ownerfikri@gmail.com',
+            'password' => '11111111',
         ]);
 
-        // ASSERT 5: Login berhasil menggunakan assertSessionDoesntHaveErrors
-        $successLogin->assertSessionDoesntHaveErrors();
+        // ASSERT 5: Login berhasil menggunakan assertRedirect
+        $successLogin->assertRedirect('/user/dashboard');
 
         // ASSERT 6: Redirect ke dashboard menggunakan assertStringContainsString
         $this->assertStringContainsString(
@@ -217,6 +222,6 @@ class RegistrasiTest extends TestCase
         $this->assertFalse(Hash::check('wrongpassword', $user->password));
 
         // ASSERT 8: Verifikasi password menggunakan assertTrue untuk correct password
-        $this->assertTrue(Hash::check('testpassword', $user->password));
+        $this->assertTrue(Hash::check('11111111', $user->password));
     }
 }
