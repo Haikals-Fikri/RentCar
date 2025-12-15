@@ -21,23 +21,19 @@ class BookingModelTest extends TestCase
     {
         parent::setUp();
 
-        // Buat user untuk booking
         $this->user = User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password123'),
+            'name' => 'Haikal',
+            'email' => 'userhaikal@gmail.com',
+            'password' => bcrypt('11111111'),
         ]);
 
-        // Buat vehicle dengan hanya field yang diperlukan untuk relasi
-        // Asumsikan Vehicle memiliki field minimal: owner_id, name, price_per_day
         $this->vehicle = Vehicle::create([
             'owner_id' => $this->user->id,
-            'name' => 'Test Vehicle',
+            'name' => 'Brio',
             'price_per_day' => 500000,
-            // Tambahkan field wajib lainnya jika ada
-            'type' => 'Sedan',
-            'brand' => 'Toyota',
-            'plate_number' => 'B 1234 XYZ',
+            'type' => 'Hatchback',
+            'brand' => 'Honda',
+            'plate_number' => 'DP 6767 GG',
             'status_vehicle' => 'Tersedia',
 
         ]);
@@ -46,13 +42,13 @@ class BookingModelTest extends TestCase
     #[Test]
     public function test_booking_model_accessors()
     {
-        // Data dasar booking dengan SEMUA field dari $fillable
+
         $baseBookingData = [
             'vehicle_id' => $this->vehicle->id,
             'user_id' => $this->user->id,
-            'name' => 'John Doe',
-            'address' => 'Jl. Contoh No. 123',
-            'phone' => '081234567890',
+            'name' => ' Haikal',
+            'address' => 'Jl. Bumi Harapan No. 8',
+            'phone' => '089504517110',
             'sim_image' => 'sim_images/test.jpg',
             'payment_method' => 'Transfer Bank',
             'status' => 'Pending',
@@ -63,22 +59,19 @@ class BookingModelTest extends TestCase
             'end_date' => Carbon::now()->addDays(3),
         ];
 
-        // Buat 5 booking dengan kondisi berbeda untuk 5 assert
+
         $bookings = [];
 
-        // 1. Booking baru (tidak expired, belum mulai)
         $booking1 = new Booking($baseBookingData);
         $booking1->created_at = Carbon::now()->subHours(12); // 12 jam lalu
         $booking1->save();
 
-        // 2. Booking expired (lebih dari 24 jam)
         $booking2 = new Booking(array_merge($baseBookingData, [
             'status' => 'Pending'
         ]));
         $booking2->created_at = Carbon::now()->subHours(25); // 25 jam lalu
         $booking2->save();
 
-        // 3. Booking dengan status Disetujui dan sudah selesai (end_date lewat)
         $booking3 = new Booking(array_merge($baseBookingData, [
             'status' => 'Disetujui',
             'start_date' => Carbon::now()->subDays(5),
@@ -87,7 +80,6 @@ class BookingModelTest extends TestCase
         $booking3->created_at = Carbon::now()->subHours(12);
         $booking3->save();
 
-        // 4. Booking dengan status Disetujui dan masih aktif
         $booking4 = new Booking(array_merge($baseBookingData, [
             'status' => 'Disetujui',
             'start_date' => Carbon::now()->subDays(1),
@@ -96,7 +88,6 @@ class BookingModelTest extends TestCase
         $booking4->created_at = Carbon::now()->subHours(12);
         $booking4->save();
 
-        // 5. Booking dengan status Dibatalkan
         $booking5 = new Booking(array_merge($baseBookingData, [
             'status' => 'Dibatalkan',
         ]));

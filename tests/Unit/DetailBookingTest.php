@@ -24,30 +24,27 @@ class DetailBookingTest extends TestCase
     {
         parent::setUp();
 
-        // 1. Buat user Admin (untuk akses dashboard)
         $this->admin = User::create([
-            'name' => 'Test Admin',
-            'email' => 'admin@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Admin Haikal',
+            'email' => 'adminhaikal@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'admin'
         ]);
         $this->actingAs($this->admin);
 
-        // 1b. Buat Owner kedua (untuk menghindari FK Constraint pada Vehicle B)
         $this->owner2 = User::create([
-            'name' => 'Test Owner 2',
-            'email' => 'owner2@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Owner Haikal',
+            'email' => 'ownerhaikal@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'owner'
         ]);
 
-        // 2. Buat Vehicle (dengan kolom NOT NULL yang lengkap)
         $this->vehicleA = Vehicle::create([
             'owner_id' => $this->admin->id, // Menggunakan ID yang valid
-            'name' => 'Car A',
+            'name' => 'Avanza',
             'brand' => 'Toyota',
             'model' => 'Avanza',
-            'plate_number' => 'B 1111 XX',
+            'plate_number' => 'DD 1811 PP',
             'transmisi' => 'Manual',
             'price_per_day' => 100000,
             'status_vehicle' => 'Tersedia',
@@ -56,23 +53,19 @@ class DetailBookingTest extends TestCase
 
         $this->vehicleB = Vehicle::create([
             'owner_id' => $this->owner2->id, // Menggunakan ID yang valid
-            'name' => 'Car B',
+            'name' => 'Brio',
             'brand' => 'Honda',
             'model' => 'Brio',
-            'plate_number' => 'B 2222 YY',
+            'plate_number' => 'D 2892 MI',
             'transmisi' => 'Matic',
             'price_per_day' => 200000,
             'status_vehicle' => 'Tersedia',
             'type' => 'Hatchback'
         ]);
 
-        // Atur waktu sekarang ke 15 Maret 2025 (Jumat, 14 Maret 2025)
         Carbon::setTestNow(Carbon::create(2025, 3, 14));
     }
 
-    /**
-     * Helper untuk membuat Booking
-     */
     protected function createBooking(Carbon $date, Vehicle $vehicle, string $status, int $count = 1): void
     {
         for ($i = 0; $i < $count; $i++) {
@@ -93,15 +86,11 @@ class DetailBookingTest extends TestCase
     #[Test]
     public function it_can_filter_data_weekly_and_calculate_peak_day()
     {
-        // Setup Data untuk Minggu ini (Senin, 10 Maret 2025 s/d Minggu, 16 Maret 2025)
         $startOfWeek = Carbon::now()->startOfWeek(Carbon::MONDAY); // 10 Maret
 
-        // Data hari Jumat (14 Maret) -> Peak
         $this->createBooking($startOfWeek->copy()->addDays(4), $this->vehicleA, 'completed', 3);
-        // Data hari Selasa (11 Maret)
         $this->createBooking($startOfWeek->copy()->addDay(), $this->vehicleB, 'confirmed', 1);
 
-        // Aksi: Akses dengan filter mingguan
         $response = $this->get(route('booking.analytics', ['filter' => 'mingguan'])); // <-- Perbaikan Route
 
         $response->assertOk();
@@ -128,19 +117,16 @@ class DetailBookingTest extends TestCase
     #[Test]
     public function it_can_filter_data_monthly_and_handle_comparison()
     {
-        // Setup Data (Maret 2025)
         $this->createBooking(Carbon::create(2025, 3, 10), $this->vehicleA, 'confirmed', 5); // 5 Booking di Maret
-        // Setup Data untuk perbandingan (Februari 2025)
         $this->createBooking(Carbon::create(2025, 2, 10), $this->vehicleB, 'completed', 2); // 2 Booking di Februari
 
-        // Aksi: Akses dengan filter bulanan (Maret) dan perbandingan (Februari)
         $response = $this->get(route('booking.analytics', [ // <-- Perbaikan Route
             'filter' => 'bulanan',
-            'month' => '03',
+            'month' => '12',
             'year' => '2025',
             'compare_mode' => 'bulanan',
-            'periodA' => '03', // Maret (5)
-            'periodB' => '02'  // Februari (2)
+            'periodA' => '12',
+            'periodB' => '01'
         ]));
 
         $response->assertOk();
@@ -168,13 +154,10 @@ class DetailBookingTest extends TestCase
     #[Test]
     public function it_can_filter_data_yearly()
     {
-        // Setup Data (2025)
         $this->createBooking(Carbon::create(2025, 1, 1), $this->vehicleA, 'completed', 4); // Januari
         $this->createBooking(Carbon::create(2025, 11, 1), $this->vehicleB, 'confirmed', 7); // November -> Peak
-        // Data di luar tahun 2025
         $this->createBooking(Carbon::create(2024, 12, 1), $this->vehicleA, 'completed', 2);
 
-        // Aksi: Akses dengan filter tahunan (2025)
         $response = $this->get(route('booking.analytics', ['filter' => 'tahunan', 'year' => '2025'])); // <-- Perbaikan Route
 
         $response->assertOk();
@@ -203,12 +186,9 @@ class DetailBookingTest extends TestCase
     {
         $customDate = Carbon::create(2025, 4, 20); // 20 April 2025
 
-        // Setup Data (20 April)
         $this->createBooking($customDate, $this->vehicleA, 'completed', 6);
-        // Data di luar tanggal custom
         $this->createBooking($customDate->copy()->subDay(), $this->vehicleB, 'confirmed', 1);
 
-        // Aksi: Akses dengan filter custom
         $response = $this->get(route('booking.analytics', ['filter' => 'custom', 'date' => $customDate->format('Y-m-d')])); // <-- Perbaikan Route
 
         $response->assertOk();
@@ -224,8 +204,6 @@ class DetailBookingTest extends TestCase
         $this->assertCount(5, $mainData['labels'], 'Chart labels harus 5 untuk filter custom (rentang 5 hari).');
 
         // ASSERT 4: Memverifikasi data chart menunjukkan angka 6 pada posisi hari H (20 April)
-        // 18 Apr (0), 19 Apr (1), 20 Apr (6), 21 Apr (0), 22 Apr (0). Data 6 ada di index 2.
-        // Cek: Data 19 April (index 1) harus 1 (dari booking subDay)
         $this->assertEquals(1, $mainData['data'][1], 'Chart data untuk tanggal 19 April (subDay) harus 1.');
 
         // ASSERT 5: Memverifikasi filter yang digunakan
@@ -235,9 +213,7 @@ class DetailBookingTest extends TestCase
     #[Test]
     public function it_returns_empty_data_for_no_bookings()
     {
-        // Data kosong, tidak ada booking yang dibuat setelah RefreshDatabase
 
-        // Aksi: Akses dengan filter bulanan default
         $response = $this->get(route('booking.analytics', [ // <-- Perbaikan Route
             'filter' => 'bulanan',
             'month' => date('m'),

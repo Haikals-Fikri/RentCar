@@ -16,22 +16,22 @@ class UserModelTest extends TestCase
     {
         // ASSERT 1: User dapat dibuat dengan field dari $fillable
         $user = User::create([
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
-            'password' => bcrypt('password123'),
+            'name' => 'Adam Syahqwan',
+            'email' => 'usersyahqwan@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'user'
         ]);
 
         $this->assertNotNull($user->id, 'User harus berhasil dibuat dengan field dari $fillable');
-        $this->assertEquals('John Doe', $user->name);
-        $this->assertEquals('john@example.com', $user->email);
+        $this->assertEquals('Adam Syahqwan', $user->name);
+        $this->assertEquals('usersyahqwan@gmail.com', $user->email);
         $this->assertEquals('user', $user->role);
 
         // ASSERT 2: Method isOwner() bekerja sesuai role
         $owner = User::create([
-            'name' => 'Vehicle Owner',
-            'email' => 'owner@example.com',
-            'password' => bcrypt('password123'),
+            'name' => 'Risda',
+            'email' => 'ownerrisda@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'owner'
         ]);
 
@@ -40,9 +40,9 @@ class UserModelTest extends TestCase
 
         // ASSERT 3: Method isUser() bekerja sesuai role
         $admin = User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
+            'name' => 'Achmad Haikal Fikri',
+            'email' => 'adminhaikal@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'admin'
         ]);
 
@@ -53,9 +53,9 @@ class UserModelTest extends TestCase
         // ASSERT 4: Role validation/handling
         // Test role default jika tidak diisi
         $noRoleUser = User::create([
-            'name' => 'No Role User',
-            'email' => 'norole@example.com',
-            'password' => bcrypt('password123')
+            'name' => 'Adam',
+            'email' => 'adam@gmail.com',
+            'password' => bcrypt('11111111')
             // role tidak diisi
         ]);
 
@@ -66,9 +66,9 @@ class UserModelTest extends TestCase
         // ASSERT 5: Email harus unique
         try {
             User::create([
-                'name' => 'Duplicate Email',
-                'email' => 'john@example.com', // Email sama dengan user pertama
-                'password' => bcrypt('password123'),
+                'name' => 'Adam Syahqwan',
+                'email' => 'usersyahqwan@gmail.com',
+                'password' => bcrypt('111111111'),
                 'role' => 'user'
             ]);
             $this->fail('Seharusnya throw exception untuk duplicate email');

@@ -18,11 +18,10 @@ class AdminCreateUser extends TestCase
     {
         parent::setUp();
 
-        // Setup admin user
         $this->admin = User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Haikal',
+            'email' => 'adminhaikal@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'admin'
         ]);
     }
@@ -30,13 +29,11 @@ class AdminCreateUser extends TestCase
     #[Test]
     public function admin_dapat_melihat_daftar_user()
     {
-        // Setup: Buat beberapa user
+
         User::factory()->count(3)->create(['role' => 'user']);
 
-        // Login sebagai admin
         $this->actingAs($this->admin);
 
-        // ACT: Akses halaman daftar user
         $response = $this->get('/admin/users');
 
         // ASSERT 1: Cek response status 200 menggunakan assertOk
@@ -61,18 +58,17 @@ class AdminCreateUser extends TestCase
     #[Test]
     public function admin_dapat_menambahkan_user_baru()
     {
-        // Login sebagai admin
+
         $this->actingAs($this->admin);
 
-        // Data user baru
+
         $userData = [
-            'name' => 'User Baru',
-            'email' => 'newuser@test.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123'
+            'name' => 'Risda',
+            'email' => 'userrisda@gmail.com',
+            'password' => '11111111',
+            'password_confirmation' => '11111111'
         ];
 
-        // ACT: Tambah user baru
         $response = $this->post('/admin/users/store', $userData);
 
         // ASSERT 1: Cek redirect menggunakan assertRedirect
@@ -82,35 +78,33 @@ class AdminCreateUser extends TestCase
         $response->assertSessionHas('success');
 
         // ASSERT 3: Cek user dibuat di database menggunakan assertDatabaseCount
-        $this->assertDatabaseCount('users', 2); // admin + user baru
+        $this->assertDatabaseCount('users', 2);
 
         // ASSERT 4: Cek data user tersimpan dengan benar menggunakan assertDatabaseHas
         $this->assertDatabaseHas('users', [
-            'name' => 'User Baru',
-            'email' => 'newuser@test.com',
+            'name' => 'Risda',
+            'email' => 'userrisda@gmail.com',
             'role' => 'user'
         ]);
 
         // ASSERT 5: Cek password di-hash menggunakan assertNotEquals
-        $user = User::where('email', 'newuser@test.com')->first();
-        $this->assertNotEquals('password123', $user->password);
+        $user = User::where('email', 'userrisda@gmail.com')->first();
+        $this->assertNotEquals('11111111', $user->password);
     }
 
     #[Test]
     public function admin_dapat_menghapus_user()
     {
-        // Setup: Buat user untuk dihapus
+
         $userToDelete = User::create([
-            'name' => 'User Dihapus',
-            'email' => 'delete@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Adam',
+            'email' => 'useradam@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'user'
         ]);
 
-        // Login sebagai admin
         $this->actingAs($this->admin);
 
-        // ACT: Hapus user
         $response = $this->delete("/admin/users/{$userToDelete->id}");
 
         // ASSERT 1: Cek redirect menggunakan assertRedirect
@@ -122,11 +116,11 @@ class AdminCreateUser extends TestCase
         // ASSERT 3: Cek user dihapus dari database menggunakan assertDatabaseMissing
         $this->assertDatabaseMissing('users', [
             'id' => $userToDelete->id,
-            'email' => 'delete@test.com'
+            'email' => 'useradam@gmail.com'
         ]);
 
         // ASSERT 4: Cek jumlah user berkurang menggunakan assertDatabaseCount
-        $this->assertDatabaseCount('users', 1); // hanya admin tersisa
+        $this->assertDatabaseCount('users', 1);
 
         // ASSERT 5: Cek admin tidak terhapus menggunakan assertNotNull
         $admin = User::find($this->admin->id);
@@ -136,13 +130,11 @@ class AdminCreateUser extends TestCase
     #[Test]
     public function admin_dapat_melihat_daftar_owner()
     {
-        // Setup: Buat beberapa owner
+
         User::factory()->count(2)->create(['role' => 'owner']);
 
-        // Login sebagai admin
         $this->actingAs($this->admin);
 
-        // ACT: Akses halaman daftar owner
         $response = $this->get('/admin/owners');
 
         // ASSERT 1: Cek response status 200 menggunakan assertStatus
@@ -167,14 +159,12 @@ class AdminCreateUser extends TestCase
     #[Test]
     public function admin_dapat_melihat_statistik_pengguna()
     {
-        // Setup: Buat beberapa user dan owner
+
         User::factory()->count(4)->create(['role' => 'user']);
         User::factory()->count(3)->create(['role' => 'owner']);
 
-        // Login sebagai admin
         $this->actingAs($this->admin);
 
-        // ACT: Akses halaman histogram
         $response = $this->get('/admin/histogram');
 
         // ASSERT 1: Cek response status 200 menggunakan assertOk
@@ -190,7 +180,7 @@ class AdminCreateUser extends TestCase
         $response->assertViewHas('OwnerCount');
 
         // ASSERT 5: Cek perhitungan jumlah benar menggunakan assertEquals
-        $this->assertEquals(4, $response->viewData('UserCount')); // 4 user
-        $this->assertEquals(3, $response->viewData('OwnerCount')); // 3 owner
+        $this->assertEquals(4, $response->viewData('UserCount'));
+        $this->assertEquals(3, $response->viewData('OwnerCount'));
     }
 }

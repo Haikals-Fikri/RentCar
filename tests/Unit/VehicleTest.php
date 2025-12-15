@@ -25,9 +25,9 @@ class VehicleTest extends TestCase
 
         // Setup owner
         $this->owner = User::create([
-            'name' => 'Test Owner',
-            'email' => 'owner@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Owner Syahqwan',
+            'email' => 'ownersyahqwan@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'owner'
         ]);
 
@@ -39,7 +39,7 @@ class VehicleTest extends TestCase
             'name' => 'Toyota Avanza',
             'brand' => 'Toyota',
             'type' => 'MPV',
-            'plate_number' => 'B 1234 ABC',
+            'plate_number' => 'DD 9843 AC',
             'price_per_day' => 300000,
             'status_vehicle' => 'Tersedia',
             'owner_id' => $this->owner->id
@@ -56,7 +56,7 @@ class VehicleTest extends TestCase
             'name' => 'Honda Brio',
             'brand' => 'Honda',
             'type' => 'Hatchback',
-            'plate_number' => 'B 5678 DEF',
+            'plate_number' => 'DD 5678 DEF',
             'price_per_day' => 250000,
             'status_vehicle' => 'Tersedia',
             'owner_id' => $this->owner->id
@@ -82,18 +82,16 @@ class VehicleTest extends TestCase
             'name' => 'Mitsubishi Xpander',
             'brand' => 'Mitsubishi',
             'type' => 'MPV',
-            'plate_number' => 'B 9999 XYZ',
+            'plate_number' => 'DD 9439 FG',
             'seat' => '7',
             'transmission' => 'Automatic',
-            'fuel_type' => 'Petrol',
+            'fuel_type' => 'Bensin',
             'year' => '2023',
             'price_per_day' => 350000,
-            // OPSI 1: Tanpa image (nullable)
-            // 'image' => null
+
         ];
 
-        // OPSI 2: Jika ingin tetap test upload, gunakan file tanpa GD
-        // $vehicleData['image'] = UploadedFile::fake()->create('vehicle.jpg', 100, 'image/jpeg');
+
 
         $response = $this->post('/vehicles', $vehicleData);
 
@@ -102,10 +100,10 @@ class VehicleTest extends TestCase
         $this->assertDatabaseCount('vehicles', 2);
         $this->assertDatabaseHas('vehicles', [
             'name' => 'Mitsubishi Xpander',
-            'plate_number' => 'B 9999 XYZ',
+            'plate_number' => 'DD 9439 FG',
             'owner_id' => $this->owner->id
         ]);
-        $newVehicle = Vehicle::where('plate_number', 'B 9999 XYZ')->first();
+        $newVehicle = Vehicle::where('plate_number', 'DD 9439 FG')->first();
         $this->assertEquals('Tersedia', $newVehicle->status_vehicle);
     }
 
@@ -116,7 +114,7 @@ class VehicleTest extends TestCase
             'name' => 'Toyota Avanza Updated',
             'brand' => 'Toyota',
             'type' => 'MPV',
-            'plate_number' => 'B 1234 ABC',
+            'plate_number' => 'DD 1884 AC',
             'price_per_day' => 350000,
             'seat' => '7',
             'transmission' => 'Manual'
@@ -134,23 +132,23 @@ class VehicleTest extends TestCase
         $this->vehicle->refresh();
         $this->assertSame('Toyota', $this->vehicle->brand);
         $this->assertSame('MPV', $this->vehicle->type);
-        $this->assertEquals('B 1234 ABC', $this->vehicle->plate_number);
+        $this->assertEquals('DD 1884 AC', $this->vehicle->plate_number);
     }
 
     #[Test]
     public function OwnerVehicleSeeVehicle()
     {
         $otherowner = User::create([
-            'name' => 'Owner Lain',
-            'email' => 'ownerlain@gmail.com',
-            'password' => bcrypt('password'),
+            'name' => 'Owner Risda',
+            'email' => 'ownerrisda@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'owner'
         ]);
         Vehicle::create([
             'name' => 'Honda Jazz',
             'brand' => 'Honda',
             'type' => 'Hatchback',
-            'plate_number' => 'B 4321 CDE',
+            'plate_number' => 'DP 4321 DE',
             'price_per_day' => 280000,
             'status_vehicle' => 'Tersedia',
             'owner_id' => $otherowner->id
@@ -160,7 +158,7 @@ class VehicleTest extends TestCase
             'name' => 'Suzuki Ertiga',
             'brand' => 'Suzuki',
             'type' => 'MPV',
-            'plate_number' => 'B 8765 FGH',
+            'plate_number' => 'DD 8765 FG',
             'price_per_day' => 320000,
             'status_vehicle' => 'Tersedia',
             'owner_id' => $this->owner->id
@@ -183,17 +181,17 @@ class VehicleTest extends TestCase
 
 
         // asssert 4
-       $PlateNumber = $vehicleSee->pluck('plate_number')->toArray();
-       $this->assertContains('B 1234 ABC', $PlateNumber);
-       $this->assertContains('B 8765 FGH', $PlateNumber);
+        $PlateNumber = $vehicleSee->pluck('plate_number')->toArray();
+        $this->assertContains('B 1234 ABC', $PlateNumber);
+        $this->assertContains('B 8765 FGH', $PlateNumber);
 
        // assert 5
-       $this->assertDatabaseHas('vehicles', [
+        $this->assertDatabaseHas('vehicles', [
         'name' => 'Toyota Avanza',
         'plate_number' => 'B 1234 ABC',
         'owner_id' => $this->owner->id
-       ]);
-       $this->assertNotContains('B 4321 CDE', $PlateNumber);
+        ]);
+        $this->assertNotContains('B 4321 CDE', $PlateNumber);
 
     }
     #[Test]

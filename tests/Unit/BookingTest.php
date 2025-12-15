@@ -25,16 +25,16 @@ class BookingTest extends TestCase
         parent::setUp();
 
         $this->owner = User::create([
-            'name' => 'Test Owner',
-            'email' => 'owner@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Risda',
+            'email' => 'ownerrisda@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'owner'
         ]);
 
         $this->user = User::create([
-            'name' => 'Test User',
-            'email' => 'user@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Adam',
+            'email' => 'useradam@gmial.com',
+            'password' => bcrypt('11111111'),
             'role' => 'user'
         ]);
 
@@ -42,7 +42,7 @@ class BookingTest extends TestCase
             'name' => 'Toyota Avanza',
             'brand' => 'Toyota',
             'type' => 'MPV',
-            'plate_number' => 'B 1234 ABC',
+            'plate_number' => 'DD 8976 CK',
             'price_per_day' => 300000,
             'status_vehicle' => 'Tersedia',
             'owner_id' => $this->owner->id
@@ -60,21 +60,18 @@ class BookingTest extends TestCase
         $simFile = UploadedFile::fake()->create('sim.jpg', 100, 'image/jpeg');
 
         $bookingData = [
-            'name' => 'John Doe',
-            'address' => 'Jl. Test No. 123',
-            'phone' => '081234567890',
+            'name' => 'Adam',
+            'address' => 'Jl. Bumi Harapan No. 6',
+            'phone' => '081238059674',
             'start_date' => now()->addDays(1)->format('Y-m-d'),
             'end_date' => now()->addDays(3)->format('Y-m-d'),
             'sim_image' => $simFile,
-            'payment_method' => 'Transfer Bank'
+            'payment_method' => 'Bayar Di Tempat'
         ];
 
-        // ROUTE YANG BENAR: Sesuai web.php
-        // Route::post('/booking/{vehicle}/store', [BookingController::class, 'store'])->name('booking.store');
         $response = $this->post("/booking/{$this->vehicle->id}/store", $bookingData);
 
         // ASSERT 1: Cek redirect ke user.bookings
-        // Controller: return redirect()->route('user.bookings')
         $response->assertRedirect(route('user.bookings'));
 
         // ASSERT 2: Cek success message
@@ -103,16 +100,15 @@ class BookingTest extends TestCase
         $simFile = UploadedFile::fake()->create('sim.jpg', 100, 'image/jpeg');
 
         $bookingData = [
-            'name' => 'John Doe',
-            'address' => 'Jl. Test No. 123',
-            'phone' => '081234567890',
+            'name' => 'Haikal',
+            'address' => 'Jl. Bumi Harapan No. 8',
+            'phone' => '089504517110',
             'start_date' => now()->addDays(1)->format('Y-m-d'),
             'end_date' => now()->addDays(3)->format('Y-m-d'),
             'sim_image' => $simFile,
             'payment_method' => 'Transfer Bank'
         ];
 
-        // ROUTE YANG BENAR
         $response = $this->post("/booking/{$this->vehicle->id}/store", $bookingData);
 
         // ASSERT 1: Cek redirect back (karena error validasi)
@@ -136,9 +132,9 @@ class BookingTest extends TestCase
     public function user_dapat_membatalkan_booking_yang_milikinya()
     {
         $booking = Booking::create([
-            'name' => 'John Doe',
-            'address' => 'Jl. Test No. 123',
-            'phone' => '081234567890',
+            'name' => 'Risda',
+            'address' => 'Lompoe No. 7',
+            'phone' => '089654109903',
             'start_date' => now()->addDays(1),
             'end_date' => now()->addDays(3),
             'sim_image' => 'sims/test.jpg',
@@ -152,8 +148,6 @@ class BookingTest extends TestCase
         $this->vehicle->update(['status_vehicle' => 'Tidak_tersedia']);
         $this->actingAs($this->user);
 
-        // ROUTE YANG BENAR: Sesuai web.php
-        // Route::post('/booking/{id}/cancel', [BookingController::class, 'cancelBooking'])->name('booking.cancel');
         $response = $this->post("/booking/{$booking->id}/cancel");
 
         // ASSERT 1: Cek redirect back
@@ -180,9 +174,9 @@ class BookingTest extends TestCase
     public function user_dapat_melihat_daftar_booking_milikinya()
     {
         Booking::create([
-            'name' => 'John Doe',
-            'address' => 'Jl. Test No. 123',
-            'phone' => '081234567890',
+            'name' => 'Haikal',
+            'address' => 'Jl. Bumi Harapan No. 8',
+            'phone' => '085904517110',
             'start_date' => now()->addDays(1),
             'end_date' => now()->addDays(3),
             'sim_image' => 'sims/test1.jpg',
@@ -194,9 +188,9 @@ class BookingTest extends TestCase
         ]);
 
         Booking::create([
-            'name' => 'Jane Smith',
-            'address' => 'Jl. Test No. 456',
-            'phone' => '081234567891',
+            'name' => 'Adam',
+            'address' => 'Jl. Bumi Harapan No. 8',
+            'phone' => '081238059674',
             'start_date' => now()->addDays(5),
             'end_date' => now()->addDays(7),
             'sim_image' => 'sims/test2.jpg',
@@ -209,8 +203,6 @@ class BookingTest extends TestCase
 
         $this->actingAs($this->user);
 
-        // ROUTE YANG BENAR: Sesuai web.php
-        // Route::get('/user/bookings', [BookingController::class, 'index'])->name('user.bookings');
         $response = $this->get('/user/bookings');
 
         // ASSERT 1: Cek response status 200
@@ -235,19 +227,17 @@ class BookingTest extends TestCase
     #[Test]
     public function user_tidak_dapat_membatalkan_booking_bukan_milikinya()
     {
-        // Buat user lain
         $otherUser = User::create([
-            'name' => 'Other User',
-            'email' => 'other@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Adam',
+            'email' => 'useradam2@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'user'
         ]);
 
-        // Buat booking milik user lain
         $booking = Booking::create([
-            'name' => 'John Doe',
-            'address' => 'Jl. Test No. 123',
-            'phone' => '081234567890',
+            'name' => 'Adam',
+            'address' => 'Jl. Agus Salim No. 12',
+            'phone' => '081238009976',
             'start_date' => now()->addDays(1),
             'end_date' => now()->addDays(3),
             'sim_image' => 'sims/test.jpg',
@@ -261,7 +251,6 @@ class BookingTest extends TestCase
         $this->vehicle->update(['status_vehicle' => 'Tidak_tersedia']);
         $this->actingAs($this->user);
 
-        // Coba batalkan booking milik orang lain
         $response = $this->post("/booking/{$booking->id}/cancel");
 
         // ASSERT 1: Cek redirect back

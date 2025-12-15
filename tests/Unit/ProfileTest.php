@@ -44,10 +44,10 @@ class ProfileTest extends TestCase
         }
 
         $photoData = [
-            'name' => 'User With Photo',
-            'email' => 'withphoto@test.com',
-            'full_name' => 'User Dengan Foto',
-            'phone_number' => '081234567892',
+            'name' => 'Risda',
+            'email' => 'risda@gmail.com',
+            'full_name' => 'Risda',
+            'phone_number' => '089654109903',
             'photo' => $photoFile
         ];
 
@@ -55,14 +55,11 @@ class ProfileTest extends TestCase
         $response->assertRedirect();
         $response->assertSessionHas('success');
 
-        // Debug: Lihat apa yang tersimpan
         $profile = UserProfile::where('user_id', $this->user->id)->first();
 
         if ($profile && $profile->photo) {
-            // Debug output
             echo "\nPhoto path in database: " . $profile->photo;
 
-            // Coba beberapa kemungkinan path
             $possiblePaths = [
                 $profile->photo,
                 str_replace('UserProfile/', '', $profile->photo),
@@ -76,16 +73,13 @@ class ProfileTest extends TestCase
                 }
             }
 
-            // List semua file di storage fake
             $allFiles = Storage::disk('public')->allFiles();
             echo "\nAll files in storage: " . implode(', ', $allFiles);
         }
 
-        // Assert yang lebih toleran
         $this->assertNotNull($profile);
         $this->assertNotNull($profile->photo);
 
-        // Cek apakah file ada di storage dengan pattern
         $fileExists = false;
         $allFiles = Storage::disk('public')->allFiles();
 
@@ -104,20 +98,18 @@ class ProfileTest extends TestCase
     {
         $this->actingAs($this->owner);
 
-        // 1. Update dengan foto - GUNAKAN create() bukan image()
         try {
             $photoFile = UploadedFile::fake()->image('owner.jpg', 100, 100);
         } catch (\LogicException $e) {
-            // Jika image() error karena GD, gunakan create()
             $photoFile = UploadedFile::fake()->create('owner.jpg', 100, 'image/jpeg');
         }
 
         $photoData = [
-            'name' => 'Owner With Photo',
-            'email' => 'ownerphoto@test.com',
-            'owner_name' => 'Owner Dengan Foto',
-            'business_name' => 'CV. Foto Profesional',
-            'phone_number' => '081234567893',
+            'name' => 'Owner Risda',
+            'email' => 'ownerrisda@gmail.com',
+            'owner_name' => 'Owner Risda',
+            'business_name' => 'CV.Rentcar',
+            'phone_number' => '089654109903',
             'photo' => $photoFile
         ];
 
@@ -148,15 +140,15 @@ class ProfileTest extends TestCase
     {
         OwnerProfile::create([
             'owner_id' => $this->owner->id,
-            'owner_name' => 'Car Rental Owner',
-            'business_name' => 'CV. Mobil Murah'
+            'owner_name' => 'Rentcar',
+            'business_name' => 'CV. Kokorentcar',
         ]);
 
         Vehicle::create([
             'name' => 'Toyota Avanza',
             'brand' => 'Toyota',
             'type' => 'MPV',
-            'plate_number' => 'B 1111 AAA',
+            'plate_number' => 'DD 1131 FF',
             'price_per_day' => 300000,
             'status_vehicle' => 'Tersedia',
             'owner_id' => $this->owner->id
@@ -166,7 +158,7 @@ class ProfileTest extends TestCase
             'name' => 'Honda Brio',
             'brand' => 'Honda',
             'type' => 'Hatchback',
-            'plate_number' => 'B 2222 BBB',
+            'plate_number' => 'DD 2422 RB',
             'price_per_day' => 250000,
             'status_vehicle' => 'Tersedia',
             'owner_id' => $this->owner->id
@@ -192,16 +184,16 @@ class ProfileTest extends TestCase
         $this->actingAs($this->user);
 
         $fullData = [
-            'name' => 'Complete User',
-            'email' => 'complete@test.com',
-            'full_name' => 'Complete Name',
-            'phone_number' => '081234567890',
-            'address' => 'Jl. Lengkap No. 123',
-            'city' => 'Jakarta',
-            'province' => 'DKI Jakarta',
-            'postal_code' => '12345',
-            'date_of_birth' => '1990-01-01',
-            'gender' => 'Laki-laki'
+            'name' => 'User Risda',
+            'email' => 'userrisda@test.com',
+            'full_name' => 'User Risda',
+            'phone_number' => '089654109903',
+            'address' => 'Jl. Lompoe No. 9',
+            'city' => 'Parepare',
+            'province' => 'Sulawesi Selatan',
+            'postal_code' => '91161',
+            'date_of_birth' => '2005-10-20',
+            'gender' => 'Perempuan'
         ];
 
         $response = $this->put('/profile/update', $fullData);
@@ -210,16 +202,16 @@ class ProfileTest extends TestCase
 
         $profile = UserProfile::where('user_id', $this->user->id)->first();
         $this->assertNotNull($profile);
-        $this->assertEquals('Complete Name', $profile->full_name);
-        $this->assertEquals('Jakarta', $profile->city);
-        $this->assertEquals('DKI Jakarta', $profile->province);
-        $this->assertEquals('12345', $profile->postal_code);
+        $this->assertEquals('User Risda', $profile->full_name);
+        $this->assertEquals('Parepare', $profile->city);
+        $this->assertEquals('Sulawesi Selatan', $profile->province);
+        $this->assertEquals('91161', $profile->postal_code);
 
         if ($profile->date_of_birth) {
-            $this->assertEquals('1990-01-01', $profile->date_of_birth->toDateString());
+            $this->assertEquals('2005-10-20', $profile->date_of_birth->toDateString());
         }
 
-        $this->assertEquals('Laki-laki', $profile->gender);
+        $this->assertEquals('Perempuan', $profile->gender);
     }
 
     #[Test]
@@ -228,11 +220,11 @@ class ProfileTest extends TestCase
         $this->actingAs($this->owner);
 
         $socialData = [
-            'name' => 'Social Owner',
-            'email' => 'social@test.com',
-            'owner_name' => 'Social Business',
-            'business_name' => 'CV. Sosial Media',
-            'phone_number' => '081234567890',
+            'name' => 'Owner Risda',
+            'email' => 'risdaowner@gmail.com',
+            'owner_name' => 'Owner Risda',
+            'business_name' => 'CV. Rentcar',
+            'phone_number' => '089654109903',
             'facebook' => 'https://facebook.com/business',
             'instagram' => 'https://instagram.com/business',
             'tiktok' => 'https://tiktok.com/@business'
@@ -245,7 +237,6 @@ class ProfileTest extends TestCase
         $profile = OwnerProfile::where('owner_id', $this->owner->id)->first();
         $this->assertNotNull($profile);
 
-        // Cek jika field sosial media ada
         if (isset($profile->facebook)) {
             $this->assertStringStartsWith('https://', $profile->facebook);
         }
@@ -256,7 +247,7 @@ class ProfileTest extends TestCase
             $this->assertStringStartsWith('https://', $profile->tiktok);
         }
 
-        $this->assertEquals('Social Business', $profile->owner_name);
-        $this->assertEquals('CV. Sosial Media', $profile->business_name);
+        $this->assertEquals('Owner Risda', $profile->owner_name);
+        $this->assertEquals('CV. Rentcar', $profile->business_name);
     }
 }

@@ -23,59 +23,50 @@ class OwnerDetailBookingTest extends TestCase
     {
         parent::setUp();
 
-        // 1. Buat user Owner
         $this->owner = User::create([
-            'name' => 'Test Owner',
-            'email' => 'owner@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Adam',
+            'email' => 'owneradam@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'owner'
         ]);
         $this->actingAs($this->owner);
 
-        // 2. Buat User (Customer)
         $this->user = User::create([
-            'name' => 'Test User',
-            'email' => 'user@test.com',
-            'password' => bcrypt('password'),
+            'name' => 'Adam',
+            'email' => 'useradam@gmail.com',
+            'password' => bcrypt('11111111'),
             'role' => 'user'
         ]);
 
-        // 3. Buat Vehicle milik Owner
         $this->vehicle = Vehicle::create([
             'owner_id' => $this->owner->id,
-            'name' => 'Test Mobil',
+            'name' => 'Brio',
             'brand' => 'Honda',
-            'type' => 'Sedan',
-            'plate_number' => 'B 7777 XX',
+            'type' => 'Hatchback',
+            'plate_number' => 'DP 7797 HI',
             'price_per_day' => 500000,
             'status_vehicle' => 'Tersedia'
         ]);
 
-        // Atur waktu sekarang ke 15 Maret 2025
         Carbon::setTestNow(Carbon::create(2025, 3, 15));
     }
 
-    /**
-     * @param int $count
-     * @param Carbon $date
-     * @return void
-     */
+
     protected function createBookingsForAnalytics(int $count, Carbon $date): void
     {
-        // Pastikan kolom NOT NULL terisi
         for ($i = 0; $i < $count; $i++) {
             Booking::create([
                 'vehicle_id' => $this->vehicle->id,
-                'user_id' => $this->user->id, // Gunakan $this->user
+                'user_id' => $this->user->id,
                 'start_date' => $date,
                 'end_date' => $date->copy()->addDay(),
-                'status' => 'Completed', // Status selain 'dibatalkan'
+                'status' => 'Completed',
                 'total_payment' => 500000,
                 'name' => 'Booking ' . $date->format('M d') . ' - ' . $i,
-                'address' => 'Addr',
-                'phone' => '123',
+                'address' => 'Bacukiki Barat',
+                'phone' => '081238059674',
                 'sim_image' => 'sim',
-                'payment_method' => 'Transfer Bank',
+                'payment_method' => 'Bayar Di Tempat',
                 'deposit_amount' => 50000,
             ]);
         }
@@ -84,19 +75,15 @@ class OwnerDetailBookingTest extends TestCase
     #[Test]
     public function analytics_dashboard_memfilter_data_berdasarkan_bulanan_default_owner()
     {
-        // Setup Data (Maret 2025): Total 5 booking yang HARUS diambil
         $this->createBookingsForAnalytics(3, Carbon::create(2025, 3, 10));
         $this->createBookingsForAnalytics(2, Carbon::create(2025, 3, 20));
 
-        // Booking Februari 2025: Total 1 booking yang HARUS difilter
         $this->createBookingsForAnalytics(1, Carbon::create(2025, 2, 10));
         $februaryBooking = Booking::whereMonth('start_date', 2)->first();
 
-        // 1. Aksi: Akses dashboard 'DetailBooking@index' dengan filter bulanan (Maret 2025)
-        // Ganti route jika nama route Anda berbeda (misalnya: 'owner.analytics')
         $response = $this->get(route('booking.analytics', [
             'filter' => 'bulanan',
-            'month' => '03',
+            'month' => '11',
             'year' => '2025'
         ]));
 
@@ -113,7 +100,6 @@ class OwnerDetailBookingTest extends TestCase
         );
 
         // ASSERT 3: Memverifikasi status filter 'bulanan' terpilih di view
-        // Periksa apakah input filter di view berisi nilai 'bulanan' yang terpilih
         $response->assertSeeInOrder([
             '<select name="filter">',
             '<option value="bulanan" selected',
@@ -124,7 +110,6 @@ class OwnerDetailBookingTest extends TestCase
         $this->assertCount(5, $mainData['table_data'], 'Table data harus berisi 5 booking dari bulan Maret.');
 
         // ASSERT 5: Memverifikasi Rata-rata booking
-        // Bulan Maret 2025 memiliki 31 hari. Rata-rata = 5 / 31 = 0.161 -> 0.2 (karena calculateStats membulatkan ke 1 desimal)
         $expectedAverage = number_format(5 / Carbon::create(2025, 3, 1)->daysInMonth, 1);
         $this->assertEquals($expectedAverage, $mainData['stats']['average'], 'Rata-rata booking harus terhitung benar (5/31 dibulatkan).');
     }

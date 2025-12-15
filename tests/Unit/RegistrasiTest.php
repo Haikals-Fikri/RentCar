@@ -21,7 +21,6 @@ class RegistrasiTest extends TestCase
     #[Test]
     public function RegistrationValidUser()
     {
-        // ACT: Lakukan registrasi
         $response = $this->post('/register-user', [
             'name' => self::VALID_NAME,
             'email' => self::VALID_EMAIL,
@@ -58,17 +57,15 @@ class RegistrasiTest extends TestCase
     #[Test]
     public function RegistratationInvalidEmailAvailable()
     {
-        // ARRANGE: Buat user terlebih dahulu dengan create()
         User::create([
-            'name' => 'User Lama',
+            'name' => 'Achmad Haikal Fikri',
             'email' => self::VALID_EMAIL,
             'password' => Hash::make(self::VALID_PASSWORD),
             'role' => 'user'
         ]);
 
-        // ACT: Coba registrasi dengan email yang sama
         $response = $this->post('/register-user', [
-            'name' => 'Nama Baru',
+            'name' => 'Achmad Haikal',
             'email' => self::VALID_EMAIL,
             'password' => self::VALID_PASSWORD,
             'password_confirmation' => self::VALID_PASSWORD,
@@ -94,12 +91,11 @@ class RegistrasiTest extends TestCase
     #[Test]
     public function ValidatePasswordCharacter()
     {
-        // ACT: Coba registrasi dengan password terlalu pendek
         $response = $this->post('/register-user', [
             'name' => self::VALID_NAME,
             'email' => self::NEW_EMAIL,
-            'password' => '123', // Hanya 3 karakter
-            'password_confirmation' => '123',
+            'password' => '111',
+            'password_confirmation' => '111',
         ]);
 
         // ASSERT 1: Cek redirect menggunakan assertRedirect
@@ -123,7 +119,7 @@ class RegistrasiTest extends TestCase
         );
 
         // ASSERT 6: Cek password pendek tidak bisa di-hash dengan benar
-        $shortPassword = '123';
+        $shortPassword = '11111111';
         $hashed = Hash::make($shortPassword);
         $this->assertGreaterThan(20, strlen($hashed), 'Hash harus lebih dari 20 karakter');
     }
@@ -131,7 +127,6 @@ class RegistrasiTest extends TestCase
     #[Test]
     public function RegistratationOwnerDiffrentUser()
     {
-        // ACT 1: Registrasi user
         $userResponse = $this->post('/register-user', [
             'name' => 'Risda',
             'email' => 'risda@gmail.com',
@@ -139,7 +134,6 @@ class RegistrasiTest extends TestCase
             'password_confirmation' => self::VALID_PASSWORD,
         ]);
 
-        // ACT 2: Registrasi owner
         $ownerResponse = $this->post('/register-owner', [
             'name' => 'Adam',
             'email' => 'adam@gmail.com',
@@ -174,7 +168,6 @@ class RegistrasiTest extends TestCase
     #[Test]
     public function RegistratationLoginSuitable()
     {
-        // PHASE 1: Registrasi
         $registerResponse = $this->post('/register-user', [
             'name' => 'Ownerfikri@gmail.com',
             'email' => 'ownerfikri@gmail.com',
