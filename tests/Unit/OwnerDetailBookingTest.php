@@ -83,7 +83,7 @@ class OwnerDetailBookingTest extends TestCase
 
         $response = $this->get(route('booking.analytics', [
             'filter' => 'bulanan',
-            'month' => '11',
+            'month' => '03',
             'year' => '2025'
         ]));
 

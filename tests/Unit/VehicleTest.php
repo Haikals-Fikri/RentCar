@@ -148,7 +148,7 @@ class VehicleTest extends TestCase
             'name' => 'Honda Jazz',
             'brand' => 'Honda',
             'type' => 'Hatchback',
-            'plate_number' => 'DP 4321 DE',
+            'plate_number' => 'B 1234 ABC',
             'price_per_day' => 280000,
             'status_vehicle' => 'Tersedia',
             'owner_id' => $otherowner->id
@@ -158,7 +158,7 @@ class VehicleTest extends TestCase
             'name' => 'Suzuki Ertiga',
             'brand' => 'Suzuki',
             'type' => 'MPV',
-            'plate_number' => 'DD 8765 FG',
+            'plate_number' => 'B 8765 FGH',
             'price_per_day' => 320000,
             'status_vehicle' => 'Tersedia',
             'owner_id' => $this->owner->id
@@ -182,13 +182,13 @@ class VehicleTest extends TestCase
 
         // asssert 4
         $PlateNumber = $vehicleSee->pluck('plate_number')->toArray();
-        $this->assertContains('B 1234 ABC', $PlateNumber);
+        $this->assertContains('DD 9843 AC', $PlateNumber);
         $this->assertContains('B 8765 FGH', $PlateNumber);
 
        // assert 5
         $this->assertDatabaseHas('vehicles', [
         'name' => 'Toyota Avanza',
-        'plate_number' => 'B 1234 ABC',
+        'plate_number' => 'DD 9843 AC',
         'owner_id' => $this->owner->id
         ]);
         $this->assertNotContains('B 4321 CDE', $PlateNumber);

@@ -77,9 +77,9 @@ class RegistrasiTest extends TestCase
         // ASSERT 2: Cek jumlah user tetap 1 menggunakan assertCount
         $this->assertCount(1, User::all());
 
-        // ASSERT 3: Cek nama TIDAK berubah (masih 'User Lama') menggunakan assertSame
+        // ASSERT 3: Cek nama TIDAK berubah (masih 'Achmad Haikal Fikri') menggunakan assertSame
         $existingUser = User::first();
-        $this->assertSame('User Lama', $existingUser->name);
+        $this->assertSame('Achmad Haikal Fikri', $existingUser->name);
 
         // ASSERT 4: Verifikasi redirect menggunakan assertStatus
         $response->assertStatus(302);

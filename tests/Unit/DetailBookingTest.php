@@ -122,11 +122,11 @@ class DetailBookingTest extends TestCase
 
         $response = $this->get(route('booking.analytics', [ // <-- Perbaikan Route
             'filter' => 'bulanan',
-            'month' => '12',
+            'month' => '03',
             'year' => '2025',
             'compare_mode' => 'bulanan',
-            'periodA' => '12',
-            'periodB' => '01'
+            'periodA' => '03',
+            'periodB' => '02'
         ]));
 
         $response->assertOk();
