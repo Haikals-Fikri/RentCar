@@ -348,7 +348,9 @@ class DetailBooking extends Controller
 
     private function generateInsights($data, $type, $stats)
     {
-        if (empty($data)) return ['Tidak ada data untuk dianalisis.'];
+        if ($stats['total'] === 0) {
+            return ["Tidak ada data booking untuk periode ini."];
+        }
 
         $insights = [];
         $total = $stats['total'];

@@ -160,8 +160,9 @@ class RegistrasiTest extends TestCase
         $ownerResponse->assertLocation('/login-owner');
 
         // ASSERT 4: Verifikasi role berbeda menggunakan assertNotSame
-        $user = User::where('email', 'user@test.com')->first();
-        $owner = User::where('email', 'owner@test.com')->first();
+        $user = User::where('email', 'risda@gmail.com')->first();
+        $owner = User::where('email', 'adam@gmail.com')->first();
+
 
         $this->assertNotSame($user->role, $owner->role);
 
