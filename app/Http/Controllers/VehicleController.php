@@ -102,7 +102,7 @@ class VehicleController extends Controller
     public function updateStatus(Request $request, Vehicle $vehicle)
     {
         $validatedData = $request->validate([
-            'status_vehicle' => 'required|in:Tersedia,Tidak_tersedia,Maintanance'
+            'status_vehicle' => 'required|in:Tersedia,Tidak_tersedia,Maintenance'
         ]);
 
         $vehicle->update([

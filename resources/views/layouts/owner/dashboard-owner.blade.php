@@ -69,11 +69,11 @@
                                     </form>
                                 @endif
 
-                                @if ($vehicle->status_vehicle !== 'Maintanance')
-                                    <form action="{{ route('vehicles.updateStatus', $vehicle->id) }}" method="POST" style="display:inline;" title="Set Maintanance">
+                                @if ($vehicle->status_vehicle !== 'Maintenance')
+                                    <form action="{{ route('vehicles.updateStatus', $vehicle->id) }}" method="POST" style="display:inline;" title="Set Maintenance">
                                         @csrf
                                         @method('PATCH')
-                                        <input type="hidden" name="status_vehicle" value="Maintanance">
+                                        <input type="hidden" name="status_vehicle" value="Maintenance">
                                         <button type="submit" class="table-action-btn status-maintenance-btn">🔧</button>
                                     </form>
                                 @endif
