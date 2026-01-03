@@ -31,15 +31,20 @@ class BookingController extends Controller
     {
         $vehicle = Vehicle::findOrFail($vehicleId);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string',
-            'phone' => 'required|string|max:20',
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'sim_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'payment_method' => 'required|string'
-        ]);
+       $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'address' => 'required|string',
+        'phone' => [
+            'required',
+            'string',
+            'regex:/^(08|62|\+62)[0-9]{8,11}$/'
+        ],
+        'start_date' => 'required|date|after_or_equal:today',
+        'end_date' => 'required|date|after_or_equal:start_date',
+        'sim_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        'payment_method' => 'required|string'
+    ]);
+
 
         // Double check status sebelum booking
         if ($vehicle->status_vehicle !== 'Tersedia') {
@@ -209,7 +214,7 @@ class BookingController extends Controller
             ->latest()
             ->get();
 
-        return view('admin-booking', compact('bookings'));
+        return view('admin.admin-booking', compact('bookings'));
     }
 
     /**

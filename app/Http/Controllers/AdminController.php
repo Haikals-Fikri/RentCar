@@ -8,24 +8,24 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     public function dashboard() {
-        return view('dashboard-admin');
+        return view('admin.dashboard-admin');
     }
 
     // ======== CRUD USER ========
     public function users() {
         $users = User::where('role', 'user')->get();
-        return view('admin-users', compact('users'));
+        return view('admin.admin-users', compact('users'));
     }
 
     public function createUser() {
-        return view('admin-user-create');
+        return view('admin.admin-user-create');
     }
 
     public function storeUser(Request $request) {
         $request->validate([
             'name'     => 'required',
             'email'    => 'required|email|unique:users',
-            'password' => 'required|min:5',
+            'password' => 'required|min:8',
         ]);
 
         User::create([
@@ -40,7 +40,7 @@ class AdminController extends Controller
 
     public function editUser($id) {
         $user = User::findOrFail($id);
-        return view('admin-user-edit', compact('user'));
+        return view('admin.admin-user-edit', compact('user'));
     }
 
     public function updateUser(Request $request, $id) {
@@ -65,18 +65,18 @@ class AdminController extends Controller
     // ======== CRUD OWNER ========
     public function owners() {
         $owners = User::where('role', 'owner')->get();
-        return view('admin-owners', compact('owners'));
+        return view('admin.admin-owners', compact('owners'));
     }
 
     public function createOwner() {
-        return view('admin-owner-create');
+        return view('admin.admin-owner-create');
     }
 
     public function storeOwner(Request $request) {
         $request->validate([
             'name'     => 'required',
             'email'    => 'required|email|unique:users',
-            'password' => 'required|min:5',
+            'password' => 'required|min:8',
         ]);
 
         User::create([
@@ -91,7 +91,7 @@ class AdminController extends Controller
 
     public function editOwner($id) {
         $owner = User::findOrFail($id);
-        return view('admin-owner-edit', compact('owner'));
+        return view('admin.admin-owner-edit', compact('owner'));
     }
 
     public function updateOwner(Request $request, $id) {
@@ -116,6 +116,6 @@ class AdminController extends Controller
     public function histogram() {
         $UserCount = User::where('role', 'user')->count(); //menghitung jumlah user
         $OwnerCount = User::where('role', 'owner')->count(); //menghitung jumlah owner
-        return view('admin-histogram', compact('UserCount', 'OwnerCount'));
+        return view('admin.admin-histogram', compact('UserCount', 'OwnerCount'));
     }
 }

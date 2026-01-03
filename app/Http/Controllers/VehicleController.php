@@ -38,7 +38,7 @@ class VehicleController extends Controller
         $validatedData = $request->validate([
             'name'          => 'required|string|max:255',
             'brand'         => 'required|string|max:255',
-            'type'          => 'required|string|max:255',
+            'type'          => 'required|string|max:2555',
             'plate_number'  => 'required|string|unique:vehicles',
             'seat'          => 'nullable|string|max:255',
             'transmission'  => 'nullable|string|max:255',

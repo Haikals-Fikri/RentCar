@@ -19,6 +19,8 @@ export default defineConfig({
                     'resources/css/user/Booking-form.css',
                     'resources/css/user/review-user.css',
                     'resources/css/user/rating.css',
+                    'resources/css/user/profileuser.css',
+                    'resources/css/user/userownerprofile.css',
 
                     //owner
                     'resources/css/owner/Detail_booking.css',
@@ -29,6 +31,17 @@ export default defineConfig({
                     //admin
                     'resources/css/admin/D_admin.css',
                     'resources/css/admin/A_Histogram.css',
+                    'resources/css/admin/admin_owner_crud.css',
+                    'resources/css/admin/admin_user_crud.css',
+                    'resources/css/admin/admin_owners.css',
+                    'resources/css/admin/admin_users.css',
+
+                    //auth
+                    'resources/css/auth/login_user.css',
+                    'resources/css/auth/login_owner.css',
+                    'resources/css/auth/login_admin.css',
+                    'resources/css/auth/registrasi_user.css',
+                    'resources/css/auth/registrasi_owner.css',
 
 
 
@@ -38,12 +51,32 @@ export default defineConfig({
 
 
                     // Tambahkan file  atau JS lainnya di sini
-                    'resources/js/welcome.js',
-                    'resources/js/admin/D_admin.js',
-                    'resources/js/owner/D_owner.js',
+
+                    //user
                     'resources/js/user/D_user.js',
+                    'resources/js/user/bookingform.js',
+                    'resources/js/user/bookinglist.js',
+
+                    //owner
+                    'resources/js/owner/D_owner.js',
                     'resources/js/owner/profile-owner.js',
-                    'resources/js/admin/A_Histogram.js'
+
+                    //admin
+                     'resources/js/admin/D_admin.js',
+                     'resources/js/admin/A_Histogram.js',
+
+                    //auth
+                     'resources/js/auth/login_admin.js',
+                     'resources/js/auth/login_owner.js',
+                     'resources/js/auth/login_user.js',
+                     'resources/js/auth/registrasi_owner.js',
+                     'resources/js/auth/registrasi_user.js',
+
+                    //welcome
+                    'resources/js/welcome.js',
+
+
+
             ],
 
             refresh: true,

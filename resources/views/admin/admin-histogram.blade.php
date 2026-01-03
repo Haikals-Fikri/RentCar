@@ -1,4 +1,4 @@
-@extends('dashboard-admin')
+@extends('admin.dashboard-admin')
 
 @vite('resources/css/admin/A_Histogram.css')
 

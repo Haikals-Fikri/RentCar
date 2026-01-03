@@ -1,88 +1,9 @@
-@extends('dashboard-admin')
+@extends('admin.dashboard-admin')
 
 @section('content')
 
 {{-- CSS kustom untuk form. Sebaiknya pindahkan ke file CSS utama Anda untuk kerapian. --}}
-<style>
-    .page-title {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--pure-white);
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .form-container {
-        background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(26, 26, 26, 0.8));
-        backdrop-filter: blur(10px);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 2.5rem;
-        max-width: 700px; /* Lebar maksimal form agar tidak terlalu lebar di layar besar */
-        margin: 0 auto;    /* Posisi form di tengah halaman */
-    }
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-    .form-group label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 0.75rem;
-        color: rgba(255, 255, 255, 0.9);
-    }
-    .form-control {
-        width: 100%;
-        padding: 0.9rem 1rem;
-        background-color: var(--secondary-black);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        color: var(--pure-white);
-        font-size: 1rem;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    .form-control:focus {
-        outline: none;
-        border-color: var(--primary-yellow);
-        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
-    }
-    /* Styling untuk pesan error validasi */
-    .invalid-feedback {
-        color: var(--error-color);
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
-    }
-    .form-actions {
-        margin-top: 2.5rem;
-        display: flex;
-        justify-content: flex-end; /* Posisi tombol di sebelah kanan */
-        gap: 1rem;
-    }
-    .btn {
-        text-decoration: none;
-        padding: 0.8rem 1.8rem;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        border: none;
-    }
-    .btn-primary {
-        background: var(--primary-yellow);
-        color: var(--primary-black);
-        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
-    }
-    .btn-primary:hover {
-        background: var(--secondary-yellow);
-        transform: translateY(-2px);
-    }
-    .btn-secondary {
-        background: var(--accent-black);
-        color: var(--pure-white);
-        border: 1px solid var(--border-color);
-    }
-    .btn-secondary:hover {
-        background: var(--secondary-black);
-    }
-</style>
+    @vite('resources/css/admin/admin_user_crud.css')
 
 <div class="form-container">
     <h2 class="page-title">Edit User</h2>

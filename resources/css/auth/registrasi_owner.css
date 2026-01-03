@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin - RentCar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
+* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -115,7 +107,7 @@
             padding: 2rem;
         }
 
-        .login-container {
+        .registration-container {
             max-width: 500px;
             width: 100%;
             background: rgba(26, 26, 26, 0.8);
@@ -230,6 +222,27 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 0.75rem;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-yellow);
+            cursor: not-allowed; /* Indicate it's disabled for editing */
+        }
+
+        .checkbox-group label {
+            color: var(--pure-white);
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: default; /* Indicate it's disabled for editing */
+        }
+
         /* Submit Button */
         .submit-btn {
             width: 100%;
@@ -304,7 +317,7 @@
                 margin-top: 80px;
             }
 
-            .login-container {
+            .registration-container {
                 padding: 2rem;
             }
 
@@ -326,90 +339,14 @@
         .loading .submit-btn {
             background: rgba(255, 215, 0, 0.5);
         }
-    </style>
-</head>
-<body>
-    <div class="grid-background"></div>
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="logo">RentCar</a>
-            <a href="/" class="back-btn">← Kembali ke Beranda</a>
-        </div>
-    </nav>
+        /* Success Animation */
+        .success-animation {
+            animation: successPulse 0.6s ease-in-out;
+        }
 
-    <div class="main-container">
-        <div class="login-container">
-            <div class="form-header">
-                <h1 class="form-title">Login Admin</h1>
-                <p class="form-subtitle">Masuk ke akun administrator Anda</p>
-            </div>
-
-            @if($errors->any())
-                <div class="error-container">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('login-admin') }}" id="loginForm">
-                @csrf
-
-                <div class="form-group">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email"
-                           id="email"
-                           name="email"
-                           class="form-input"
-                           placeholder="contoh@email.com"
-                           value="{{ old('email') }}"
-                           required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password"
-                           id="password"
-                           name="password"
-                           class="form-input"
-                           placeholder="Masukkan password Anda"
-                           required>
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    🔒 Login Admin
-                </button>
-            </form>
-
-            <div class="form-links">
-                <a href="/" class="form-link">
-                    ← Kembali ke Beranda
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('loginForm');
-            const submitBtn = form.querySelector('.submit-btn');
-
-            // Form submission handling
-            form.addEventListener('submit', function(e) {
-                // Add loading state
-                form.classList.add('loading');
-                submitBtn.innerHTML = '⏳ Memproses...';
-            });
-
-            // Add entrance animation
-            setTimeout(() => {
-                document.querySelector('.login-container').style.opacity = '1';
-                document.querySelector('.login-container').style.transform = 'translateY(0)';
-            }, 100);
-        });
-    </script>
-</body>
-</html>
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }

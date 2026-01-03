@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     // Tampilkan halaman register & login
-    public function showRegisterUser()  { return view('register-user'); }
-    public function showRegisterOwner() { return view('register-owner'); }
-    public function showLoginUser()     { return view('login-user'); }
-    public function showLoginOwner()    { return view('login-owner'); }
-    public function showLoginAdmin()    { return view('login-admin'); }
+    public function showRegisterUser()  { return view('auth.register-user'); }
+    public function showRegisterOwner() { return view('auth.register-owner'); }
+    public function showLoginUser()     { return view('auth.login-user'); }
+    public function showLoginOwner()    { return view('auth.login-owner'); }
+    public function showLoginAdmin()    { return view('auth.login-admin'); }
 
     // Proses Registrasi User
     public function registerUser(Request $request)

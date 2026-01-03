@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrasi Owner - RentCar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
+* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -80,6 +72,7 @@
         }
 
         .logo {
+            font-family: 'Times New Roman', Times, serif;
             font-size: 2rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--primary-yellow), var(--secondary-yellow));
@@ -115,7 +108,7 @@
             padding: 2rem;
         }
 
-        .registration-container {
+        .login-container {
             max-width: 500px;
             width: 100%;
             background: rgba(26, 26, 26, 0.8);
@@ -230,27 +223,6 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            margin-right: 0.75rem;
-            width: 20px;
-            height: 20px;
-            accent-color: var(--primary-yellow);
-            cursor: not-allowed; /* Indicate it's disabled for editing */
-        }
-
-        .checkbox-group label {
-            color: var(--pure-white);
-            font-weight: 500;
-            font-size: 1rem;
-            cursor: default; /* Indicate it's disabled for editing */
-        }
-
         /* Submit Button */
         .submit-btn {
             width: 100%;
@@ -325,7 +297,7 @@
                 margin-top: 80px;
             }
 
-            .registration-container {
+            .login-container {
                 padding: 2rem;
             }
 
@@ -347,176 +319,3 @@
         .loading .submit-btn {
             background: rgba(255, 215, 0, 0.5);
         }
-
-        /* Success Animation */
-        .success-animation {
-            animation: successPulse 0.6s ease-in-out;
-        }
-
-        @keyframes successPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-    </style>
-</head>
-<body>
-    <div class="grid-background"></div>
-
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="logo">RentCar</a>
-            <a href="/" class="back-btn">← Kembali ke Beranda</a>
-        </div>
-    </nav>
-
-    <div class="main-container">
-        <div class="registration-container">
-            <div class="form-header">
-                <h1 class="form-title">Registrasi Owner</h1>
-                <p class="form-subtitle">Daftarkan diri Anda sebagai pemilik kendaraan di RentCar</p>
-            </div>
-
-            @if($errors->any())
-                <div class="error-container">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('owner.register') }}" id="registrationForm">
-                @csrf
-
-                <div class="form-group">
-                    <label for="name" class="form-label">Nama Lengkap</label>
-                    <input type="text"
-                           id="name"
-                           name="name"
-                           class="form-input"
-                           placeholder="Masukkan nama lengkap Anda"
-                           value="{{ old('name') }}"
-                           required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email"
-                           id="email"
-                           name="email"
-                           class="form-input"
-                           placeholder="contoh@email.com"
-                           value="{{ old('email') }}"
-                           required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password"
-                           id="password"
-                           name="password"
-                           class="form-input"
-                           placeholder="Minimal 8 karakter"
-                           required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                    <input type="password"
-                           id="password_confirmation"
-                           name="password_confirmation"
-                           class="form-input"
-                           placeholder="Ulangi password Anda"
-                           required>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" name="as_owner" value="1" id="as_owner" checked enabled>
-                    <label for="as_owner">Daftar sebagai Owner</label>
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    🚗 Daftar Sekarang
-                </button>
-            </form>
-
-            <div class="form-links">
-                <a href="{{ route('login-owner') }}" class="form-link primary-link">
-                    Sudah punya akun? Login di sini
-                </a>
-                <a href="/" class="form-link">
-                    ← Kembali ke Beranda
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('registrationForm');
-            const submitBtn = form.querySelector('.submit-btn');
-
-            // Form submission handling
-            form.addEventListener('submit', function(e) {
-                // Add loading state
-                form.classList.add('loading');
-                submitBtn.innerHTML = '⏳ Mendaftar...';
-
-                // Validate passwords match
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('password_confirmation').value;
-
-                if (password !== confirmPassword) {
-                    e.preventDefault();
-                    // You might want to display this error more gracefully, e.g., in the error-container
-                    alert('Password dan konfirmasi password tidak cocok!');
-                    form.classList.remove('loading');
-                    submitBtn.innerHTML = '🚗 Daftar Sekarang';
-                    return;
-                }
-            });
-
-            // Input focus animations
-            const inputs = document.querySelectorAll('.form-input');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    // This animation is already handled by the :focus pseudo-class in CSS
-                    // No need for JavaScript to directly manipulate transform/opacity on parentElement
-                });
-
-                input.addEventListener('blur', function() {
-                    // No need for JavaScript to directly manipulate transform/opacity on parentElement
-                });
-            });
-
-            // Real-time password validation
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('password_confirmation');
-
-            function validatePasswords() {
-                const password = passwordInput.value;
-                const confirmPassword = confirmPasswordInput.value;
-
-                if (confirmPassword && password !== confirmPassword) {
-                    confirmPasswordInput.style.borderColor = 'var(--error-color)';
-                } else if (confirmPassword) {
-                    confirmPasswordInput.style.borderColor = 'var(--success-color)';
-                } else {
-                    confirmPasswordInput.style.borderColor = 'rgba(255, 215, 0, 0.2)';
-                }
-            }
-
-            passwordInput.addEventListener('input', validatePasswords);
-            confirmPasswordInput.addEventListener('input', validatePasswords);
-
-            // Add entrance animation
-            setTimeout(() => {
-                document.querySelector('.registration-container').style.opacity = '1';
-                document.querySelector('.registration-container').style.transform = 'translateY(0)';
-            }, 100);
-        });
-    </script>
-</body>
-</html>
