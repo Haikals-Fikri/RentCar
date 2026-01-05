@@ -19,6 +19,7 @@ class Booking extends Model
         'phone',
         'sim_image',
         'payment_method',
+        'payment_proof',
         'status',
         'total_payment',
         'review',

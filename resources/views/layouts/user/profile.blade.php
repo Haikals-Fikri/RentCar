@@ -1,7 +1,7 @@
 @extends('layouts.user.user')
 
 @section('content')
-@vite('resources/css/user/profiluser.css')
+@vite('resources/css/user/profileuser.css')
 
 
 <div class="profile-wrapper">

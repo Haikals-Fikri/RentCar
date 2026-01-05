@@ -99,17 +99,21 @@ Route::get('/admin/booking', [BookingController::class, 'adminBooking'])->name('
 Route::get('/owner/bookings', [BookingController::class, 'ownerBooking'])->name('owner.bookings');
 // booking di batalkan
 Route::post('/booking/{id}/cancel', [BookingController::class, 'cancelBooking'])->name('booking.cancel');
+// Upload bukti pembayaran
+Route::post('/booking/{id}/uploadProof', [BookingController::class, 'uploadPaymentProof'])->name('booking.uploadProof');
 
 // Rating & Review
 Route::get('/booking/{id}/complete', [BookingController::class, 'completeForm'])->name('booking.completeForm');
 Route::post('/booking/{id}/complete', [BookingController::class, 'submitReview'])->name('booking.submitReview');
 Route::get('/user/reviews', [BookingController::class, 'userReviews'])->name('user.reviews');
 
-
+// approve or reject booking
+Route::post('/booking/{id}/approve', [BookingController::class, 'approve'])->name('booking.approve');
+Route::post('/booking/{id}/reject', [BookingController::class, 'reject'])->name('booking.reject');
 
 // Cetak PDF
 Route::get('/booking/{id}/print', [BookingController::class, 'printPdf'])->name('booking.print');
-
+Route::get('/booking/download-proof/{id}', [BookingController::class, 'downloadPaymentImage'])->name('booking.paymentproof');
 // Route untuk print laporan
 Route::get('/booking-analytics/print', [DetailBooking::class, 'printReport'])->name('booking.print-report');
 

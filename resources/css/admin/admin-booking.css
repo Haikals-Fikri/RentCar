@@ -1,0 +1,157 @@
+.page-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #FFD700;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    background: #1A1A1A;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255,215,0,0.2);
+}
+
+.booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+}
+
+.booking-table th {
+    background: #2A2A2A;
+    color: #FFD700;
+    padding: 1.2rem;
+    text-align: left;
+}
+
+.booking-table td {
+    padding: 1rem;
+    border-top: 1px solid #333;
+}
+
+.booking-table tr:hover {
+    background: rgba(255,215,0,0.05);
+}
+
+.center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.muted {
+    color: #888;
+}
+
+.small {
+    font-size: 0.8rem;
+}
+
+.badge {
+    background: #333;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.proof-thumb {
+    width: 60px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #FFD700;
+    cursor: pointer;
+}
+
+.doc-link {
+    color: #FFD700;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.status {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.btn-outline {
+    background: #2A2A2A;
+    color: #FFD700;
+    border: 1px solid #FFD700;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem;
+    color: #666;
+}
+
+.empty-state .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* MODAL */
+
+.image-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 9999;
+}
+
+.image-modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    border: 2px solid #FFD700;
+    transform: scale(0.95);
+    transition: transform 0.25s ease;
+}
+
+.image-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.image-modal.active img {
+    transform: scale(1);
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 2rem;
+    color: #FFD700;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.close-modal:hover {
+    transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+    .booking-table th, .booking-table td {
+        padding: 0.8rem;
+    }
+
+    .proof-thumb {
+        width: 50px;
+        height: 35px;
+    }
+}

@@ -1,0 +1,270 @@
+:root {
+    --primary-yellow: #FFD700;
+    --secondary-yellow: #FFA500;
+    --dark-yellow: #B8860B;
+    --primary-black: #0A0A0A;
+    --secondary-black: #1A1A1A;
+    --accent-black: #2A2A2A;
+    --pure-white: #FFFFFF;
+    --border-color: rgba(255, 215, 0, 0.25);
+    --error-color: #ff2020;
+    --success-color: #4ECDC4;
+    --completed-color: #21ed6c;
+    --cash-color: #FFD700;
+    --transfer-color: #4169E1;
+}
+
+/* ========================= */
+/* LAYOUT & UTILS */
+/* ========================= */
+.dashboard-content {
+    padding: 24px;
+}
+
+.sub {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 2px;
+}
+
+.sub.price {
+    color: var(--primary-yellow);
+    font-weight: 600;
+}
+
+/* ========================= */
+/* ALERT */
+/* ========================= */
+.alert-success,
+.alert-error {
+    padding: 12px 16px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: .9rem;
+}
+
+.alert-success {
+    background: rgba(78, 205, 196, .15);
+    border: 1px solid rgba(78, 205, 196, .3);
+    color: var(--success-color);
+}
+
+.alert-error {
+    background: rgba(255, 32, 32, .15);
+    border: 1px solid rgba(255, 32, 32, .3);
+    color: var(--error-color);
+}
+
+/* ========================= */
+/* TABLE */
+/* ========================= */
+.data-table-container {
+    background: var(--secondary-black);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: collapse;
+    color: var(--pure-white);
+}
+
+.data-table th,
+.data-table td {
+    padding: 14px;
+    font-size: .85rem;
+    vertical-align: middle;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table thead th {
+    background: linear-gradient(135deg, var(--primary-yellow), var(--secondary-yellow));
+    color: var(--primary-black);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.data-table tbody tr:hover {
+    background: rgba(255, 215, 0, .05);
+}
+
+/* ========================= */
+/* BUKTI PEMBAYARAN */
+/* ========================= */
+.proof-action-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.payment-image-container {
+    position: relative;
+    width: 100px;
+    height: 60px;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: all .25s ease;
+}
+
+.payment-image-container:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.payment-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ========================= */
+/* BADGE & STATUS */
+/* ========================= */
+.badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.badge-cash { background: rgba(255, 215, 0, 0.15); color: var(--primary-yellow); }
+.badge-transfer { background: rgba(65, 105, 225, 0.15); color: var(--transfer-color); }
+
+.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status.menunggu-konfirmasi,
+.status.menunggu-pembayaran,
+.status.pending {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--primary-yellow);
+}
+
+.status.disetujui, .status.selesai {
+    background: rgba(33, 237, 108, 0.1);
+    color: var(--completed-color);
+}
+
+/* Gaya khusus untuk teks Bayar di Tempat Lunas */
+.status-paid {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(33, 237, 108, 0.1);
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(33, 237, 108, 0.3);
+    font-size: 0.75rem;
+}
+
+/* ========================= */
+/* BUTTONS & ACTIONS */
+/* ========================= */
+.action-cell {
+    min-width: 150px;
+}
+
+.action-container {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-approve, .btn-reject, .action-btn, .btn-mini.view {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: .75rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all .2s ease;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.btn-approve {
+    background: rgba(33, 237, 108, .15);
+    color: var(--completed-color);
+    border-color: rgba(33, 237, 108, .3);
+}
+
+.btn-approve:hover {
+    background: var(--completed-color);
+    color: var(--primary-black);
+}
+
+.btn-reject {
+    background: rgba(255, 32, 32, .15);
+    color: var(--error-color);
+    border-color: rgba(255, 32, 32, .3);
+}
+
+.btn-reject:hover {
+    background: var(--error-color);
+    color: var(--pure-white);
+}
+
+.action-btn {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--primary-yellow);
+    border: 1px solid var(--border-color);
+}
+
+.action-btn:hover {
+    background: var(--primary-yellow);
+    color: var(--primary-black);
+}
+
+/* ========================= */
+/* MODAL */
+/* ========================= */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal.show { display: flex; }
+
+.modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+.modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: var(--primary-yellow);
+    font-size: 30px;
+    cursor: pointer;
+}

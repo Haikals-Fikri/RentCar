@@ -9,6 +9,7 @@
 <div class="dashboard-content">
     <div class="section-header">
         <h2 class="section-title">Daftar Kendaraan Anda</h2>
+        <a href="{{ route('vehicles.create') }}" class="btn btn-primary">+ Tambah Kendaraan</a>
     </div>
 
     @if(session('success'))

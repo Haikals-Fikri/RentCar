@@ -1,4 +1,4 @@
-/* Variabel warna sama dengan layouts.user */
+/* ================= ROOT ================= */
 :root {
     --primary-yellow: #FFD700;
     --secondary-yellow: #FFA500;
@@ -9,12 +9,12 @@
     --pure-white: #FFFFFF;
     --light-gray: #F5F5F5;
     --border-color: rgba(255, 215, 0, 0.2);
-    --error-color: #FF6B6B;
+    --error-color: #ff2020;
     --success-color: #4ECDC4;
-    --completed-color:#22c55e;
+    --completed-color: #21ed6c;
 }
 
-/* Container */
+/* ================= CONTAINER ================= */
 .booking-section {
     background: rgba(26, 26, 26, 0.8);
     backdrop-filter: blur(10px);
@@ -24,7 +24,7 @@
     border: 1px solid var(--border-color);
 }
 
-/* Section Title */
+/* ================= TITLE ================= */
 .section-title {
     font-size: 1.5rem;
     font-weight: 700;
@@ -35,7 +35,7 @@
     gap: 0.5rem;
 }
 
-/* Booking Card */
+/* ================= LIST & CARD ================= */
 .booking-list {
     display: flex;
     flex-direction: column;
@@ -43,23 +43,22 @@
 }
 
 .booking-card {
+    position: relative;
     background: rgba(42, 42, 42, 0.8);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 1.5rem;
     transition: all 0.3s ease;
-    position: relative;
     overflow: hidden;
 }
 
 .booking-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0 auto 0 0;
     width: 4px;
-    height: 100%;
     background: linear-gradient(135deg, var(--primary-yellow), var(--secondary-yellow));
+    pointer-events: none; /* FIX tombol tidak bisa diklik */
 }
 
 .booking-card:hover {
@@ -68,7 +67,7 @@
     border-color: var(--primary-yellow);
 }
 
-/* Booking Header */
+/* ================= HEADER ================= */
 .booking-header {
     display: flex;
     justify-content: space-between;
@@ -81,84 +80,96 @@
     font-weight: 700;
     color: var(--pure-white);
     display: flex;
+    gap: 6px;
     align-items: center;
-    gap: 0.5rem;
 }
 
 .booking-id {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
-    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    font-family: monospace;
+    margin-top: 2px;
 }
 
-/* Status Badge */
-.status-badge {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+.payment-method-text {
     font-size: 0.8rem;
-    font-weight: 600;
+    color: var(--light-gray);
+    margin-top: 4px;
+}
+
+.payment-method-text strong {
+    color: var(--primary-yellow);
+}
+
+/* ================= STATUS ================= */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
     text-transform: uppercase;
 }
 
-.status-pending {
-    background: rgba(255, 165, 0, 0.2);
-    color: #FFA500;
-    border: 1px solid rgba(255, 165, 0, 0.3);
+.status-menunggu-pembayaran {
+    background: rgba(255,215,0,0.2);
+    color: var(--primary-yellow);
+    border: 1px solid rgba(255,215,0,0.3);
 }
 
-.status-confirmed {
-    background: rgba(34, 197, 94, 0.2);
-    color: #22c55e;
-    border: 1px solid rgba(34, 197, 94, 0.3);
+.status-menunggu-konfirmasi {
+    background: rgba(78,205,196,0.2);
+    color: var(--success-color);
+    border: 1px solid rgba(78,205,196,0.3);
 }
 
-.status-cancelled {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.3);
+.status-confirmed,
+.status-disetujui {
+    background: rgba(33,237,108,0.2);
+    color: var(--completed-color);
+    border: 1px solid rgba(33,237,108,0.3);
 }
 
 .status-completed {
-    background: rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(78,205,196,0.2);
+    color: var(--success-color);
+    border: 1px solid rgba(78,205,196,0.3);
 }
 
-.completed-text {
-    color: var(--completed-color);
-    font-weight: 600;
-    margin-top: 0.5rem;
+.status-cancelled,
+.status-expired,
+.status-dibatalkan-user {
+    background: rgba(255,255,255,0.1);
+    color: var(--light-gray);
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* Booking Details */
+/* ================= DETAILS ================= */
 .booking-details {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
     gap: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .detail-item {
     display: flex;
-    align-items: center;
     gap: 0.8rem;
 }
 
 .detail-icon {
-    width: 35px;
-    height: 35px;
-    background: rgba(255, 215, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    background: rgba(255,215,0,0.12);
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--primary-yellow);
-    font-size: 0.9rem;
 }
 
 .detail-label {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 0.2rem;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
 }
 
 .detail-value {
@@ -166,11 +177,120 @@
     color: var(--pure-white);
 }
 
-/* Action Buttons */
+/* ================= TIMER ================= */
+.timer-wrapper {
+    margin: 14px 0 6px;
+    font-size: 0.85rem;
+    color: var(--light-gray);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.timer {
+    min-width: 110px;                 /* BIAR TIDAK KECIL */
+    text-align: center;
+    font-family: monospace;
+    font-weight: 800;
+    background: linear-gradient(135deg,var(--primary-yellow),var(--secondary-yellow));
+    color: var(--primary-black);
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    box-shadow: 0 4px 12px rgba(255,215,0,0.35);
+    letter-spacing: 0.5px;
+}
+
+.expired-text {
+    color: var(--error-color);
+}
+
+/* ================= PAYMENT ================= */
+.payment-instruction-box {
+    background: rgba(255,215,0,0.08);
+    border: 1px dashed var(--primary-yellow);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-top: 1rem;
+}
+
+.payment-instruction-box p {
+    color: var(--primary-yellow);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.bank-info {
+    background: var(--accent-black);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.bank-info div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--light-gray);
+    margin-bottom: 4px;
+}
+
+.bank-info strong {
+    color: var(--primary-yellow);
+}
+
+/* ================= UPLOAD ================= */
+.payment-instruction-box label {
+    font-size: 0.8rem;
+    color: var(--light-gray);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.payment-instruction-box input[type="file"] {
+    width: 100%;
+    background: var(--secondary-black);
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 8px;
+    color: var(--light-gray);
+    cursor: pointer;
+}
+
+.payment-instruction-box input[type="file"]:hover {
+    border-color: var(--primary-yellow);
+}
+
+.payment-instruction-box input[type="file"]::-webkit-file-upload-button {
+    background: linear-gradient(135deg, var(--primary-yellow), var(--secondary-yellow));
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin-right: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.payment-instruction-box button.submit-btn {
+    margin-top: 10px;
+    background: linear-gradient(135deg, var(--completed-color), var(--success-color));
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--primary-black);
+}
+
+/* ================= ACTION BUTTONS ================= */
 .action-buttons {
     display: flex;
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 1.2rem;
     flex-wrap: wrap;
 }
 
@@ -178,77 +298,46 @@
     background: linear-gradient(135deg, var(--primary-yellow), var(--secondary-yellow));
     color: var(--primary-black);
     border: none;
-    padding: 12px 24px;
     border-radius: 8px;
-    font-size: 1rem;
+    padding: 10px 22px;
     font-weight: 600;
     cursor: pointer;
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    transition: all 0.2s;
-    text-decoration: none;
-}
-
-.cta-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    gap: 6px;
 }
 
 .cta-btn.cancel {
-    background: #ef4444;
-    color: white;
-}
-
-.cta-btn.complete {
-    background: #10b981;
-    color: white;
+    background: var(--error-color);
 }
 
 .cta-btn.review {
-    background: #3b82f6;
-    color: white;
+    background: var(--primary-yellow);
 }
 
-/* Empty State */
+/* ================= ALERT ================= */
+.alert-success-custom {
+    background: rgba(33,237,108,0.12);
+    border: 1px solid rgba(33,237,108,0.3);
+    color: var(--completed-color);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* ================= EMPTY ================= */
 .empty-state {
     text-align: center;
     padding: 4rem 2rem;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.empty-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    opacity: 0.5;
+    color: rgba(255,255,255,0.6);
 }
 
 .empty-state h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
     color: var(--pure-white);
 }
 
-/* Countdown timer */
- .countdown-timer {
-            background: #ffeb3b;
-            color: #333;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-        .expired-text {
-            color: #6c757d;
-            font-style: italic;
-        }
-        .status-expired {
-            background: #6c757d;
-            color: white;
-        }
-
-
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
     .booking-details {
         grid-template-columns: 1fr;

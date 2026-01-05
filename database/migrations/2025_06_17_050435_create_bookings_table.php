@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->string('sim_image')->nullable();
             $table->string('payment_method');
-            $table->string('status')->default("Menunggu Konfirmasi Admin");
+            $table->string('status');
             $table->string('total_payment')->nullable();
             $table->text('review')->nullable();
             $table->integer('rating')->nullable();

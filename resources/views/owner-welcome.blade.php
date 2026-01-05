@@ -146,3 +146,12 @@
 
 </body>
 </html>
+if ($user->otp_code !== $request->otp || now()->greaterThan($user->otp_expires_at)) {
+    return back()->withErrors(['otp' => 'Kode OTP tidak valid atau sudah kedaluwarsa.']);
+}
+
+$user->update([
+    'otp_verified' => true,
+    'otp_code' => null,
+]);
+Auth::login($user);
